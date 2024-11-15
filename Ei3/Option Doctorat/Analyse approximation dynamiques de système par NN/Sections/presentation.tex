@@ -1,0 +1,86 @@
+\chapter{Problem statement}
+
+\section{Context}
+
+The SuperTwisting algorithm is a known robust control algorithm based on sliding mode control %
+theory. It can be used on dynamical systems with great uncertainties and disturbances. %
+The counterpart of such theory is the apparition of chattering phenomenon, which is a high %
+frequency oscillation of the control signal. This phenomenon can be harmful for the system %
+and can lead to mechanical failures. The goal of this project is to add a new type of %
+observer based on ANN to substract the inpact of unknown perturbation on the system. %
+
+We base our work on the following article \cite{babin2019analysis} : % TODO : add the article
+This report presents an overview and a performance analysis of the controler presented %
+bellows. What are the effect of the Neural Network parameters on the approximation %
+of the perturbation ? How the performance are affected by the perturbation ? %
+
+\section{Problem statement}
+
+We are working on a Python simulation (available on this GitHub %
+\href{https://github.com/MatisViozelange/SMC_tests/tree/main/CR_observateur_periode2}{repository}). %
+Run the GUI.py file to lanch the interface. %
+The results are simulated on two dynamical systems:
+
+\begin{itemize}
+    \item A simple perturbed system:
+    \begin{equation}
+        \begin{cases}
+            \dot{x}_1 = x_2 \\
+            \dot{x}_2 = u + a \sin(t)
+        \end{cases}
+    \end{equation}
+    where \( a = 5 \).
+    
+    \item A more complex pendulum system with a time-varying length:
+    \begin{equation}
+        \begin{cases}
+            \dot{x}_1 = x_2 \\
+            \dot{x}_2 = -\frac{2 \dot{l}(t)}{l(t)} x_2 - \frac{g}{l(t)} \sin(x_1) + 2 \sin(t) + \frac{1 + 0.5 \sin(t)}{m \cdot l(t)^2} u
+        \end{cases}
+    \end{equation}
+    where:
+    \begin{itemize}
+        \item \( g = 9.81 \, \text{m/s}^2 \) is the gravitational constant,
+        \item \( m = 2 \, \text{kg} \) is the mass of the pendulum,
+        \item \( l(t) = 0.8 + 0.1 \sin(8t) + 0.3 \cos(4t) \) is the length of the pendulum as a function of time,
+        \item \( \dot{l}(t) \) represents the time derivative of \( l(t) \).
+    \end{itemize}
+\end{itemize}
+
+To evaluate the performance of the Neural Network in approximating the perturbation, %
+we :
+
+\begin{enumerate}
+    \item Discretize the signals of the perturbation and its Neural Network approximation %
+with a sampling time of \( \Delta t = 0.0001 \) s.
+    \item Compute the metrics shown below.
+\end{enumerate}
+
+\begin{itemize}
+    \item \textbf{Mean Squared Error (MSE)}: The mean squared error between the perturbation and the Neural Network approximation is given by:
+    \begin{equation}
+        \text{MSE} = \frac{1}{N} \sum_{i=1}^{N} \left( p_i - \hat{p}_i \right)^2
+    \end{equation}
+    where \( p_i \) is the true perturbation value, \( \hat{p}_i \) is the Neural Network's approximation, and \( N \) is the total number of samples.
+
+    \item \textbf{Standard Deviation of the Error}: To evaluate the stability of the Neural Network, we calculate the standard deviation of the error:
+    \begin{equation}
+        \sigma_e = \sqrt{\frac{1}{N} \sum_{i=1}^{N} \left( e_i - \bar{e} \right)^2}
+    \end{equation}
+    where \( e_i = p_i - \hat{p}_i \) is the error at each sample, and \( \bar{e} \) is the mean error.
+
+    \item \textbf{Correlation Coefficient}: To evaluate the quality of the approximation, we compute the correlation coefficient between the true perturbation and the Neural Network approximation:
+    \begin{equation}
+        r = \frac{\sum_{i=1}^{N} (p_i - \bar{p})(\hat{p}_i - \bar{\hat{p}})}{\sqrt{\sum_{i=1}^{N} (p_i - \bar{p})^2 \sum_{i=1}^{N} (\hat{p}_i - \bar{\hat{p}})^2}}
+    \end{equation}
+    where \( \bar{p} \) and \( \bar{\hat{p}} \) are the mean values of the true perturbation and the Neural Network approximation, respectively.
+\end{itemize}
+
+
+We are going to evaluate the performance of the Neural Network in approximating the perturbation %
+with different values of the following parameters:
+
+\begin{enumerate}
+    \item \textbf{n} : the number of neurons in the hidden layer of the Neural Network.
+    \item \textbf{\(\gamma\)} : the learning rate of the Neural Network.
+\end{enumerate}

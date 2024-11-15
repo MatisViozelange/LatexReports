@@ -1,0 +1,185 @@
+\documentclass[12pt]{report}
+
+
+% ====================== PACKAGES ======================
+\usepackage[english]{babel} % English language support
+\usepackage[utf8]{inputenc} % UTF-8 encoding
+\usepackage[T1]{fontenc} % Character encoding
+\usepackage{amsmath, amssymb, amsfonts} % Math packages
+\usepackage{graphicx} % Required for inserting images
+\usepackage{float} % Improved handling of floating elements
+\usepackage{hyperref} % For hyperlinks
+\usepackage{bookmark} % For handling bookmarks
+\usepackage{array, tabularx, multirow, multicol} % Table packages
+\usepackage{caption, subcaption} % Caption and subcaption for figures and tables
+\usepackage{setspace} % Set line spacing
+\usepackage{abstract} % Abstract layout
+\usepackage{color, xcolor} % Color handling
+\usepackage{lipsum} % For generating filler text
+\usepackage{fancyhdr} % Fancy headers and footers
+\usepackage{titlesec} % Section formatting
+\usepackage{enumerate} % Enumerate with custom labels
+\usepackage{booktabs, colortbl} % Improved table formatting
+\usepackage{geometry} % To define page margins
+\usepackage{longtable} % For tables spanning multiple pages
+\usepackage{listings}
+\usepackage{bm}
+
+% ====================== COMMANDS ======================
+\providecommand{\abs}[1]{\lvert#1\rvert} % Absolute value command
+\DeclareMathOperator{\sign}{sign} % Sign function
+
+% ====================== PAGE GEOMETRY ======================
+\geometry{top=2cm, bottom=3cm, left=2cm, right=2cm} % Adjust top margin to provide space for header
+\setlength{\headheight}{45pt} % Increase headheight to fit header content
+\setlength{\headsep}{20pt} % Add space between header and text
+
+% ====================== PDF METADATA ======================
+\hypersetup{ % Information about the PDF document
+    pdfauthor = {Premier Auteur}, % Authors
+    pdftitle = {Nom du Projet - Sujet du Projet}, % Title
+    pdfsubject = {Mémoire de Projet}, % Subject
+    pdfkeywords = {Tag1, Tag2, Tag3}, % Keywords
+    pdfstartview={FitH}, % Adjust page width to screen width
+    colorlinks=true, % Colored links
+    citecolor=black, % Citation links color
+    filecolor=black, % File links color
+    linkcolor=black, % Internal links color
+    urlcolor=black % URL links color
+}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{orange},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    numberstyle=\tiny\color{gray},
+    numbers=left,
+    stepnumber=1,
+    numbersep=5pt,
+    frame=single,
+    breaklines=true,
+    backgroundcolor=\color{lightgray},
+    captionpos=b,
+    tabsize=4,
+    morekeywords={Material, self},
+}
+
+% ====================== HEADER AND FOOTER ======================
+\pagestyle{fancy} % Enable fancy headers and footers
+\fancyhf{} % Clear all header and footer fields
+
+\fancyhead[L]{ % Left header
+    \begin{minipage}{1.5cm}
+        \centering
+        \includegraphics[width=0.80\textwidth]{imgs/LogoCN_Q.pdf}
+    \end{minipage}
+    \begin{minipage}{12cm}
+        \small \textsc{École}\\
+        \small \textsc{Centrale}\\
+        \small \textsc{Nantes}\\
+    \end{minipage}
+}
+\fancyhead[R]{ % Right header
+    \begin{minipage}{4.8cm}
+        \raggedleft
+        \small \textsc{stage vision}\\
+    \end{minipage}
+}
+\fancyfoot[R]{\large \textbf{\thepage}} % Right footer with page number
+
+\renewcommand{\headrulewidth}{0.2pt} % Header rule width
+\renewcommand{\footrulewidth}{0.2pt} % Footer rule width
+
+% ====================== SECTION FORMATTING ======================
+\titleformat{\chapter}[display]
+    {\normalfont\bfseries}{}{0pt}{\Large}
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+
+% ====================== BEGIN DOCUMENT ======================
+\begin{document}
+\pagenumbering{arabic} % Start page numbering in arabic numerals
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+
+% Title page
+\begin{titlepage}
+    \centering
+    \vspace*{0cm}
+    \includegraphics[width=0.3\textwidth]{imgs/LogoCN_Q.pdf}
+    
+    \vspace{3cm}
+    
+    \Huge\textbf{Analysis of System Dynamics Approximation by Neural Network}\\
+    \vspace{1cm}
+    \Large\textbf{Automation}\\
+    
+    \vspace{2cm}
+    \Large\textbf{How can we mesure the performance of a Neural Network as a perturbation approximator ?}\\
+    
+    \vfill
+    
+    \Large{Viozelange Matis}\\
+    \vspace{0.5cm}
+    
+    \vfill
+
+    \vspace{2cm}
+    
+    \Large\textit{date : \today}\\
+    
+    \vspace{0.5cm}
+    
+    \Large\textbf{École Centrale Nantes}\\
+    
+    \vspace*{1cm}
+\end{titlepage}
+
+
+% Blank page
+\newpage
+\thispagestyle{empty}
+~
+
+% % Abstract section
+% \begin{abstract}
+%     Abstract goes here.
+% \end{abstract}
+
+% Table of contents
+\tableofcontents
+\thispagestyle{empty}
+% \setcounter{page}{0}
+
+\listoffigures
+\listoftables
+
+% Espacement entre les lignes d'un tableau
+\renewcommand{\arraystretch}{1.5}
+
+%====================== INCLUSION DES PARTIES ======================
+
+~
+\thispagestyle{empty}
+%recommencer la numérotation des pages à "1"
+\setcounter{page}{0}
+\newpage
+
+\input{Sections/presentation}
+
+\input{Sections/section1}
+
+\input{Sections/conclusion}
+
+%récupérer les citation avec "/footnotemark"
+\nocite{*}
+
+%choix du style de la biblio
+\bibliographystyle{plain}
+%inclusion de la biblio
+\bibliography{bibliographie}
+%voir wiki pour plus d'information sur la syntaxe des entrées d'une bibliographie
+
+\input{annexes/annexes}
+\end{document}
