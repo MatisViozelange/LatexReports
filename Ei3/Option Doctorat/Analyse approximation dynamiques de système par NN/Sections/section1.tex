@@ -143,5 +143,48 @@ and start to see for which parameters of the Neural Network the approximation is
     \label{fig:Correlation_coefficient_for_the_basic_system}
 \end{figure}
 
+We must be careful not to make hasty conclusions. As the standard deviation increase with the %
+number of neurons and \(\gamma\), that means that the error is more spread. So can have good % 
+results to with high values of \(\gamma\) and \(n\). But  the simulation showed quite %
+intersting results.
+
+\subsection{Neural Network questionings}
+
+We can now ask ourselves some questions about the Neural Network : 
+
+\begin{itemize}
+    \item What is the Neural Network's contribution to the robustness of the system ?
+    \item Could it work with a static gain STWC ?
+    \item Can it works in open-loop ? 
+    \item The dynamic nature of the weights is really worth it compare to an off-loop Neural Network ?
+\end{itemize}
+
+\subsubsection{Open Loop approximation}
+
+By hypothesis, the output of the Neural Network is used in the control law. %
+As it is a Lyapunov design, the bondaries of the approximation regarding the %
+the real perturbation are assured by the stability of the system that is himself %
+assured by the Lyapunov function that used the dynamics of the Neural Network wieghts. %
+
+To resume, there is no reason that the Neural Network approximation is good in open-loop. %
+
+\subsubsection{Static gain approximation}
+
+The proof is based on the fact that the Neural Network works woth an ASTWC. It would be intersting %
+to create a new Neural Network that works with a static gain and tune them to unable the control %
+to counter the perturbation and see if the Neural Network add some robustness to the system. %
+
+But as we said before, we have to find new dynamic weights definition.
+
+\subsubsection{Neural Network contribution}
+
+It is prooved in Mohammad article that the ouput presents less chattering with the Neural Network. %
+We can see that the gains are also smaller du to the anticipation of the perturbation dynamics. %
+
+But, the analysis shows that the approximation's  quality is linked to the stability of the system. %
+If the system isn't reaching the sliding surface quickly, the Neural Network will not be able to %
+approximate the perturbation. %
+
+
 
 \newpage
