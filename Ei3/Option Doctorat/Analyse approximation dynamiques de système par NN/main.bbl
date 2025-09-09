@@ -1,0 +1,36 @@
+\begin{thebibliography}{1}
+
+\bibitem{stackoverflow_sobel_filter}
+Aarkan.
+\newblock Sobel filter kernel of large size.
+\newblock \url{https://stackoverflow.com/questions/9567882/sobel-filter-kernel-of-large-size}, 2012.
+\newblock Accessed: 2024-08-21.
+
+\bibitem{babin2019analysis}
+Philippe Babin, Philippe Gigu{\`e}re, and Fran{\c{c}}ois Pomerleau.
+\newblock Analysis of robust functions for registration algorithms.
+\newblock In {\em 2019 International Conference on Robotics and Automation (ICRA)}, Palais des congres de Montreal, Montreal, Canada, May 20-24 2019. IEEE.
+\newblock Palais des congres de Montreal, Montreal, Canada, May 20-24, 2019.
+
+\bibitem{Imu_proprioception}
+Marine Pétriaux Jean-Emmanuel~Deschaud Fabio Elnecave~Xavier, Guillaume~Burger and François Goulette.
+\newblock Multi-imu proprioceptive state estimator for humanoid robots.
+\newblock \url{https://arxiv.org/abs/2307.14125}, 2023.
+
+\bibitem{Fankhauser2018}
+Péter Fankhauser, Michael Bloesch, and Marco Hutter.
+\newblock Probabilistic terrain mapping for mobile robots with uncertain localization.
+\newblock {\em IEEE Robotics and Automation Letters}, 3(4), October 2018.
+
+\bibitem{kissIcp}
+Ignacio Vizzo, Benedikt Mersch, Tiziano Guadagnino, et~al.
+\newblock Kiss-icp: In defense of point-to-point icp simple, accurate, and robust registration if done the right way.
+\newblock {\em IEEE Robotics and Automation Letters}, 8(2):113--120, February 2023.
+
+\bibitem{bresenham_wikipedia}
+{Wikipedia contributors}.
+\newblock Algorithme de tracé de segment de bresenham.
+\newblock \url{https://fr.wikipedia.org/wiki/Algorithme_de_trac%C3%A9_de_segment_de_Bresenham}, 2024.
+\newblock Accessed: 2024-08-21.
+
+\end{thebibliography}

@@ -1,0 +1,15 @@
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Crane presentation and control goals}{3}{0}{1}
+\beamer@sectionintoc {2}{Crane Overview}{7}{0}{2}
+\beamer@subsectionintoc {2}{1}{Crane Model}{7}{0}{2}
+\beamer@subsectionintoc {2}{2}{Feedback linearization and dynamic extension}{15}{0}{2}
+\beamer@sectionintoc {3}{Model Following Control}{19}{0}{3}
+\beamer@subsectionintoc {3}{1}{Overview}{19}{0}{3}
+\beamer@subsectionintoc {3}{2}{Model Control Loop (MCL)}{23}{0}{3}
+\beamer@subsectionintoc {3}{3}{Process Control Loop (PCL)}{28}{0}{3}
+\beamer@subsectionintoc {3}{4}{High Gain Control Comparison}{36}{0}{3}
+\beamer@sectionintoc {4}{Results}{39}{0}{4}
+\beamer@subsectionintoc {4}{1}{Simulation Results}{39}{0}{4}
+\beamer@subsectionintoc {4}{2}{Real Plant Experiment}{45}{0}{4}
+\beamer@sectionintoc {5}{Conclusion}{49}{0}{5}
+\beamer@sectionintoc {6}{References}{50}{0}{6}

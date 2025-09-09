@@ -1,0 +1,15 @@
+\beamer@slide {fig:Schematics of three dimensional overhead crane}{5}
+\beamer@slide {fig:Schematics of three dimensional overhead crane}{8}
+\beamer@slide {fig:Schematics of three dimensional overhead crane}{9}
+\beamer@slide {eq:equation_of_motion_generalized_coordinates}{12}
+\beamer@slide {eq:flat_sys_reduced}{18}
+\beamer@slide {fig:MFC Control Loop}{20}
+\beamer@slide {eq:flat_sys_reduced}{21}
+\beamer@slide {eq:MCL_open_loop}{24}
+\beamer@slide {eq:MCL_control_law}{26}
+\beamer@slide {eq:The closed-loop overall dynamics of the MFC}{31}
+\beamer@slide {fig:Blockdiagram of the MFC architecture with linear model of the feedback linearised process}{34}
+\beamer@slide {fig:Blockdiagram of the MFC architecture with linear model of the feedback linearised process}{35}
+\beamer@slide {fig:MFC Control Loop}{35}
+\beamer@slide {fig:Simulink Model MFC Loop}{40}
+\beamer@slide {fig:input-mfc}{44}

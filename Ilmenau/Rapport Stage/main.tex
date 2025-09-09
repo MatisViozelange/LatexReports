@@ -1,0 +1,193 @@
+\documentclass[a4paper, 12pt]{report}
+
+% ====================== PACKAGES ======================
+\usepackage[french]{babel} % French language support
+\usepackage[utf8]{inputenc} % UTF-8 encoding
+\usepackage[T1]{fontenc} % Character encoding
+\usepackage{amsmath, amssymb, amsfonts} % Math packages
+\usepackage{graphicx} % Required for inserting images
+\usepackage{float} % Improved handling of floating elements
+\usepackage{hyperref} % For hyperlinks
+\usepackage{array, tabularx, multirow, multicol} % Table packages
+\usepackage{caption, subcaption} % Caption and subcaption for figures and tables
+\usepackage{setspace} % Set line spacing
+\usepackage{abstract} % Abstract layout
+\usepackage{color, xcolor} % Color handling
+\usepackage{lipsum} % For generating filler text
+\usepackage{fancyhdr} % Fancy headers and footers
+\usepackage{titlesec} % Section formatting
+\usepackage{enumerate} % Enumerate with custom labels
+\usepackage{booktabs, colortbl} % Improved table formatting
+\usepackage{geometry} % To define page margins
+\usepackage{longtable} % For tables spanning multiple pages
+\usepackage{listings}
+\usepackage{bm}
+
+% ====================== COMMANDS ======================
+\providecommand{\abs}[1]{\lvert#1\rvert} % Absolute value command
+\DeclareMathOperator{\sign}{sign} % Sign function
+
+% ====================== PAGE GEOMETRY ======================
+\geometry{top=2cm, bottom=3cm, left=2cm, right=2cm} % Adjust top margin to provide space for header
+\setlength{\headheight}{45pt} % Increase headheight to fit header content
+\setlength{\headsep}{20pt} % Add space between header and text
+
+% ====================== PDF METADATA ======================
+\hypersetup{ % Information about the PDF document
+    pdfauthor = {Premier Auteur}, % Authors
+    pdftitle = {Nom du Projet - Sujet du Projet}, % Title
+    pdfsubject = {Mémoire de Projet}, % Subject
+    pdfkeywords = {Tag1, Tag2, Tag3}, % Keywords
+    pdfstartview={FitH}, % Adjust page width to screen width
+    colorlinks=true, % Colored links
+    citecolor=black, % Citation links color
+    filecolor=black, % File links color
+    linkcolor=black, % Internal links color
+    urlcolor=black % URL links color
+}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{orange},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    numberstyle=\tiny\color{gray},
+    numbers=left,
+    stepnumber=1,
+    numbersep=5pt,
+    frame=single,
+    breaklines=true,
+    backgroundcolor=\color{lightgray},
+    captionpos=b,
+    tabsize=4,
+    morekeywords={Material, self},
+}
+
+
+% ====================== HEADER AND FOOTER ======================
+\pagestyle{fancy} % Enable fancy headers and footers
+\fancyhf{} % Clear all header and footer fields
+
+\fancyhead[L]{ % Left header
+    \begin{minipage}{1.5cm}
+        \centering
+        \includegraphics[width=0.80\textwidth]{imgs/LogoCN_Q.pdf}
+    \end{minipage}
+    \begin{minipage}{12cm}
+        \small \textsc{École}\\
+        \small \textsc{Centrale}\\
+        \small \textsc{de Nantes}\\
+    \end{minipage}
+}
+\fancyhead[R]{ % Right header
+    \begin{minipage}{4.8cm}
+        \raggedleft
+    \end{minipage}
+    \begin{minipage}{1.5cm}
+        \centering
+        \includegraphics[width=2\textwidth]{imgs/TU_Ilmenau_Logo_black_green.svg.png}
+    \end{minipage}
+}
+\fancyfoot[R]{\large \textbf{\thepage}} % Right footer with page number
+
+\renewcommand{\headrulewidth}{0.2pt} % Header rule width
+\renewcommand{\footrulewidth}{0.2pt} % Footer rule width
+
+% ====================== SECTION FORMATTING ======================
+\titleformat{\chapter}[display]
+    {\normalfont\bfseries}{}{0pt}{\Large}
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+
+% ====================== BEGIN DOCUMENT ======================
+\begin{document}
+\pagenumbering{arabic} % Start page numbering in arabic numerals
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+
+% Title page
+\begin{titlepage}
+    \centering
+    \vspace*{0cm}
+    \includegraphics[width=0.3\textwidth]{imgs/LogoCN_Q.pdf}\hfill
+    \includegraphics[width=0.3\textwidth]{imgs/TU_Ilmenau_Logo_black_green.svg.png}
+    
+    \vspace{3cm}
+    
+    \Huge\textbf{Engineering Internship Report}\\
+    \vspace{1cm}
+    \LARGE\textbf{Breaking Algebraic Loops}\\
+    \LARGE\textbf{in Sliding Mode Control}
+    
+    \vfill
+    
+    \Large\textbf{Author:} Matis Viozelange\\[0.3cm]
+    \Large\textbf{Supervisor:} Niclas Tietze\\
+    
+    \vfill
+    
+    \Large\textbf{Technische Universität Ilmenau}\\
+    \vspace{0.5cm}
+    \Large\textbf{École Centrale Nantes}
+    
+    \vspace{1.5cm}
+    
+    \Large\textbf{Internship Period:}\\
+    \Large 31/03/2024 -- 21/09/2024
+
+    \vspace*{1cm}
+\end{titlepage}
+
+% Blank page
+\newpage
+\thispagestyle{empty}
+~
+
+% Abstract section
+\begin{abstract}
+    Dans un monde du plus en plus adapté aux personnes à mobilités réduite, les efforts continuent sur tout les fronts. C'est de la volontée de voir leur visage éclairé par un sourir que nait WanderCraft, une entrprise innovante développant des exosquelettes autostabilisés pour ceux qui ne peuvent pas marcher. Robustifier et stabiliser la commande d'un tel robot encourrage l'innovation dans de nombreux domaines et sur de nombreuses techniques, parmis eux se développe une branche de vision répondant aux problèmes posés via le développement de l'odométrie et de la cartographie de l'éxosquelette. C'est dans cette recherche d'amélioration de la vision que s'incrit mon stage chez wWandercraft. Le stage Ca tue des bébé lapin nains
+\end{abstract}
+
+% Table of contents
+\tableofcontents
+\thispagestyle{empty}
+% \setcounter{page}{0}
+
+\listoffigures
+\listoftables
+
+% Espacement entre les lignes d'un tableau
+\renewcommand{\arraystretch}{1.5}
+
+%====================== INCLUSION DES PARTIES ======================
+
+~
+\thispagestyle{empty}
+%recommencer la numérotation des pages à "1"
+%\setcounter{page}{0}
+\newpage
+
+\input{Sections/presentation}
+\input{Sections/présentation_team_et_cadre-scientifique}
+
+\input{Sections/section1}
+\input{Sections/section2}
+%\input{Sections/section3}
+
+\input{Sections/bilan_perso}
+
+\input{Sections/conclusion}
+
+\newpage
+
+%récupérer les citation avec "/footnotemark"
+\nocite{*}
+
+%choix du style de la biblio
+\bibliographystyle{plain}
+%inclusion de la biblio
+\bibliography{bibliographie.bib}
+%voir wiki pour plus d'information sur la syntaxe des entrées d'une bibliographie
+
+\input{annexes/annexes}
+\end{document}

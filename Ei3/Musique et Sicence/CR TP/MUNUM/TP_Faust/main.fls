@@ -1,8 +1,8 @@
-PWD c:/Users/matis/OneDrive/Documents/Centrale Nantes/EI3/Musique et science/MUNUM/TP_FAUST/CR
+PWD c:/Users/matis/OneDrive/Documents/VSCode/Rapports_LateX/Ei3/Musique et Sicence/CR TP/MUNUM/TP_Faust
 INPUT c:/texlive/2024/texmf.cnf
 INPUT c:/texlive/2024/texmf-dist/web2c/texmf.cnf
 INPUT c:/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT c:/Users/matis/OneDrive/Documents/Centrale Nantes/EI3/Musique et science/MUNUM/TP_FAUST/CR/main.tex
+INPUT c:/Users/matis/OneDrive/Documents/VSCode/Rapports_LateX/Ei3/Musique et Sicence/CR TP/MUNUM/TP_Faust/main.tex
 OUTPUT main.log
 INPUT c:/texlive/2024/texmf-dist/tex/latex/base/report.cls
 INPUT c:/texlive/2024/texmf-dist/tex/latex/base/report.cls
