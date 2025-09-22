@@ -1,0 +1,525 @@
+
+\chapter{MATLAB Environment}
+\label{app:Matlab_environement}
+
+\begin{MATLAB}
+    %% *NLR 2 / P2.3: LABORATORY WORK - PORTAL CRANE FLAT CONTROL*
+% Author: Matti Noack, Control Engineering Group, TU Ilmenau
+% 
+% Date: 06.02.2018
+% 
+% Disclaimer: This document/script is for personal use only and is not allowed 
+% to be distributed without permission.
+
+% Setup:
+% rootpath = 'C:\Users\mano1231\Desktop\Lectures_share\NLS2\P\P2\matlab\4_LAB_SOLUTION'; % INSERT data path here!
+% cd(rootpath) 
+addpath functions models graphics % include auxilary functions & simulation models
+set(0,'defaulttextinterpreter','latex') % Latex style labels
+%% 
+% *Objective:* Analytical and numerical evaluation of a flatness based followoing 
+% control approach for the nonlinear MIMO system of a portal crane. This script 
+% shall support laboratory instructors (NLS2-P2) in terms of understanding and 
+% for demonstration purposes.
+%% Exact input-output linearization for portal crane system
+% Consider the following schematic representation of a portal crane:
+% 
+% 
+% 
+% It is assumed that the acceleration of the trolley as well as of the mass 
+% in rope direction can be actuated directly.
+%% System representation
+% Via the Lagrange formalism, a mathematical model can be obtained in the form:
+% 
+% $$\ddot{x}_\mathrm{c} = u_1 \\\ddot{y}_\mathrm{c} = u_2 \\\ddot{l}_\mathrm{c} 
+% = u_3 \\\ddot{\alpha} = \frac{1}{l \, \cos(\beta)} \left(2 \, \dot{\alpha} \, 
+% \dot{\beta} \, \sin(\beta) l - 2 \, \dot{l} \, \dot{\alpha} \, \cos(\beta) - 
+% \sin(\alpha) \, g_0 - \cos(\alpha) \, u_2 \right)\\\ddot{\beta} = \frac{1}{l} 
+% \left(-\cos(\alpha) \, \sin(\beta) \, g_0 - \sin(\beta) \, \cos(\beta) \, \dot{\alpha}^2 
+% \, l - 2\,\dot{l}\,\dot{\beta} + \sin(\beta)\,\sin(\alpha)\,u_2 - \cos(\beta)\,u_1 
+% \right)$$
+% 
+% with the constant parameter $g_0$ and the input signals $u_i$. The respective 
+% control outputs are formed by the load positions:
+% 
+% $$y_l = \pmatrix{x_\mathrm{c} + l \, sin(\beta) \cr y_\mathrm{c} + l \, sin(\alpha) 
+% \, cos(\beta)\cr -l \cos(\alpha)\, \cos(\beta)}$$
+% 
+% _*(3.1)* Bring the system into an input-affine form for symbolic calculations!_ 
+
+% Symbolic variables:
+syms x y l a b real % position states
+syms vx vy dl da db real % velocity states
+syms u1 u2 u3 real % inputs
+syms g0 positive % parameters
+z = [x vx y vy l dl a da b db]';
+u = [u1 u2 u3]';
+% Dynamic & output functions:
+dyn = [vx;
+       u1
+       vy
+       u2
+       dl
+       u3
+       da
+       (2*da*db*sin(b)*l-2*dl*da*cos(b)-sin(a)*g0-cos(a)*u2)/(l*cos(b))
+       db
+       (-cos(a)*sin(b)*g0-sin(b)*cos(b)*da^2*l-2*dl*db+sin(b)*sin(a)*u2-cos(b)*u1)/l];
+h = [x+l*sin(b);
+     y+l*sin(a)*cos(b);
+     -l*cos(a)*cos(b)]
+% Extract input affine representation:
+f = subs(dyn,u,[0 0 0]')
+g = jacobian(dyn,u')
+%% Relative degree and decoupling
+% In order to determine the relative degree automatically, the Lie Derivative 
+% has to be implemented. It is defined in the following itaritve manner:
+% 
+% $$L_f^0h(x)=h(x)\,,\quad L_fh(x)=\frac{\partial h}{\partial x}\,f \\L_f^ih(x)=L_fL_f^{i-1}h(x)$$
+% 
+% Then, the respective relative degree can be determined step by step by computing 
+% the decoupling matrix $\alpha(x)$ (do not confuse the notation with the respective 
+% state names). Consider for an equally distributed relative degree:
+% 
+% $$\alpha(x)=L_g\,L_f^{r-1}h(x)$$
+% 
+% _*(3.2)* Determine the vector relative degree as well as the sum relative 
+% degree and examine the exact I/O linearizability!_
+
+% Lie derivative function:
+alpha1 = simplify(lie_derivative(g,lie_derivative(f,h,z,0),z,1))
+alpha2 = simplify(lie_derivative(g,lie_derivative(f,h,z,1),z,1))
+simplify(det(alpha2))
+%% 
+% Thus, the vector relative degree is $r=[2,2,2]^T$ and accordingly, has not 
+% full sum relative degree $\sum r_i=6<10=n$. Additionally, the decoupling matrix 
+% $\alpha(x)$ turns out to be singular $\forall x$ and cannot be inverted. For 
+% exact input-output linearization, another approach has to be taken.
+% 
+% Keep the old but *not* uniquely invertible input-output relation for later 
+% configuration steps (namely, flat output transformation at the end).
+% 
+% $$ \ddot y=\beta(x)+\alpha(x)\,u$$
+
+% Input-output behavior:
+beta1 = simplify(lie_derivative(f,h,z,1))
+beta2 = simplify(lie_derivative(f,h,z,2))
+dy = beta1 + alpha1*u;
+ddy = beta2 + alpha2*u;
+%% Dynamic extension
+% Here, a _strategy_ can be that the system gets extended by a dynamic approach 
+% in order to generate a higher relative degree in certain channels. For example, 
+% a simple integral extension results in:
+% 
+% $$ u=\psi(x,v)\,,\quad\dot v=w$$
+% 
+% with $u$ forming a dynamic control state and $v$ defining a new input signal.
+% 
+% _Hint:_ The third input $u_3$ should be integrated up.
+% 
+% _*(3.3)* Apply the concept of dynamic extension in order to achieve a full 
+% sum relative degree with respect to an extended input with an additional integrator 
+% chain! Use the provided hints to find a decoupling conrol law._
+% 
+% *1st integrator step*
+% 
+% Ensure that potential flat outputs guarantees:
+% 
+% $$\ddot y_3=v$$
+% 
+% Now, construct the input $u_3$ in order to achieve this form.
+
+% Extend state space:
+syms v real  % new virtual state
+syms w3 real % new virtual input
+zex = [z;v];
+uex = [u1 u2 w3]';
+% Desired output behavior:
+u3des = simplify(solve(ddy(3)-v,u3))
+ddyex = simplify(subs(ddy,u3,u3des)) % check result
+% New dynamic functions:
+dynex = [subs(dyn,u3,u3des);w3];
+fex = subs(dynex,uex,[0 0 0]')
+gex = jacobian(dynex,uex')
+% Check relative degree:
+alpha_ex2 = simplify(lie_derivative(gex,lie_derivative(fex,h,zex,1),zex,1))
+alpha_ex3 = simplify(lie_derivative(gex,lie_derivative(fex,h,zex,2),zex,1))
+alpha_ex4 = simplify(lie_derivative(gex,lie_derivative(fex,h,zex,3),zex,1))
+%% 
+% One state extension does not seem to be enough (last output becomes zero).
+% 
+% *2nd integrator step*
+% 
+% Add another virtual integrator stage $\ddot v=w_3$ for increasing the relative 
+% degree (but order at the same time).
+
+% Extend state space:
+syms dv real  % new virtual velocity state
+zex = [zex;dv];
+% New dynamic functions:
+dynex = [dynex(1:end-1);dv;w3];
+fex = subs(dynex,uex,[0 0 0]')
+gex = jacobian(dynex,uex')
+% Obtain mor output derivatives:
+beta_ex3 = simplify(lie_derivative(fex,ddyex,zex,1));
+alpha_ex3 = simplify(lie_derivative(gex,ddyex,zex,1))
+d3yex = beta_ex3 + alpha_ex3*u; % new output derivative (3rd)
+beta_ex4 = simplify(lie_derivative(fex,d3yex,zex,1));
+alpha_ex4 = simplify(lie_derivative(gex,d3yex,zex,1))
+d4yex = beta_ex4 + alpha_ex4*u; % new output derivative (4th)
+%% 
+% Now, that a full relative degree of $r=(4,4,4)$ for the extended system could 
+% be achieved, the decoupling linearizing output feedback law can be computed 
+% and the respective linearizing transformation can be stated.
+% 
+% _*(3.4)* Determine the form of the decoupling control law as well as the liniearizing 
+% transformation for the extended system!_
+
+% New input relation:
+syms w1 w2 real
+w = [w1 w2 w3]';
+uctrl = alpha_ex4\(-beta_ex4 + w);
+%% 
+% Thus, an input-output linearizing control law $u$ is constructed.
+%% Linearizing transformation
+% The diffeomoprhism can now be computed using the output relations.
+
+% Transformed state vector:
+syms yf1 yf2 yf3 dyf1 dyf2 dyf3 ddyf1 ddyf2 ddyf3 d3yf1 d3yf2 d3yf3 real
+X = [yf1 yf2 yf3 dyf1 dyf2 dyf3 ddyf1 ddyf2 ddyf3 d3yf1 d3yf2 d3yf3]';
+% Transformation:
+yf = h;
+dyf = dy;
+ddyf = ddyex;
+d3yf = d3yex
+% Y = [yf;dyf;ddyf;d3yf]; % unsorted
+Y = kron(yf,[1;0;0;0]) + kron(dyf,[0;1;0;0]) + kron(ddyf,[0;0;1;0]) + kron(d3yf,[0;0;0;1]); % block sorted
+% Inverse transformation:
+% xsol = solve(Y-X,zex)
+%% 
+% :-( The inverse transformation is hard to compute! (nonlinear system of equations 
+% with 12 unknowns) $\rightarrow$ Here the guaranteed existence is sufficient 
+% as no observer is required.
+% 
+% Keep the order within the transformation in mind as it affects the linear 
+% control design in the $z$ domain.
+
+% Saving crucial functions for implementation:
+G0 = 9.813; % gravity parameter
+matlabFunction(subs(u3des,g0,G0),'File','functions/ext_control','Vars',[zex(1:end-1);u1;u2]);
+matlabFunction(subs(uctrl,g0,G0),'File','functions/flat_control','Vars',[zex;w]);
+matlabFunction(subs(Y,g0,G0),'File','functions/transformation','Vars',zex);
+%% System simulation
+% First, a controller for the linearized part of the dynamics shall be designed 
+% using the classical LQR approach. The dynamic matrices of the linear system 
+% must be brought into a block structure with respect to the defined flat extended 
+% state transformation $z=\Phi({x}_\text{ext})$.
+% 
+% _*(3.5)* Design a state feedback controller for the linearized system by utilizing 
+% the Linear Quadratic-optimal Regulator (LQR) approach!_
+
+% Linear system block form:
+Ablk = tril(triu(ones(4,4),1),1); % upper diagonal form
+A = blkdiag(Ablk,Ablk,Ablk);
+Bblk = [0;0;0;1];
+B = kron(eye(3),Bblk);
+Cblk = [1 0 0 0];
+C = kron(eye(3),Cblk);
+% LQR control:
+Qblk = diag([0.01 0.1 1 10]);
+Q = blkdiag(Qblk,Qblk,Qblk);
+R = diag([1 1 1]);
+Klqr = lqr(A,B,Q,R)
+%% 
+% _*(3.6)* Implement the system as a Simulink model including the dynamic extension 
+% and evaluate the reference control performance!_
+% 
+% Now, the entire closed loop system shall be simulated in simulink. The following 
+% model structure was implemented:
+% 
+% 
+% 
+% There, the control functions have to be implemented within the structure _"IO_Lin"_ 
+% which has the form:
+% 
+% 
+% 
+% Utilizing the former results, the simulated crane can be stabilized asymptotically. 
+% Note, that there is a disturbance applied to the simulated crane system.
+
+% Simulation parameters & reference:
+Tf = 50; % end time
+posref = [10 10 -10]';
+Yref = kron(posref,[1;0;0;0]);
+% Execute Simulink model:
+% sim('crane_mdl')
+% time = StateData.time;
+% xsim = [StateData.signals(1).values(:,1) StateData.signals(2).values(:,1) StateData.signals(3).values(:,1) ...
+%         StateData.signals(4).values(:,1) StateData.signals(5).values(:,1)];
+% vsim = [StateData.signals(1).values(:,2) StateData.signals(2).values(:,2) StateData.signals(3).values(:,2) ...
+%         StateData.signals(4).values(:,2) StateData.signals(5).values(:,2)];
+% ysim = OutData.signals.values;
+% % Evaluated results:
+% figure
+% subplot(3,1,1); plot(time,ysim(:,1),'LineWidth',2); grid
+% title('x-Position of load'); ylabel('$x_l$')
+% subplot(3,1,2); plot(time,ysim(:,2),'LineWidth',2); grid
+% title('y-Position of load'); ylabel('$y_l$')
+% subplot(3,1,3); plot(time,ysim(:,3),'LineWidth',2); grid
+% title('z-Position of load'); ylabel('$z_l$'); xlabel('time $t$')
+%% 
+% Thus, the input-output linearizing controller is able of stabilizing an operational 
+% point asymptotically. The presence of a disturbance can still be noted.
+%% Feedforward control
+% Additionally, the linearizing feedback controller shall be used for feedforward 
+% control in order to improve the overal performance when transfering form one 
+% operation point to another.
+% 
+% In this case, the flat output reference tracking control problem becomes:
+% 
+% $$y_f^{(4)}=w:=\underset{\text{feedforward}}{\underbrace{y_f^{*(4)}(t)}}+\underset{\text{generalized 
+% PD}}{\underbrace{K\cdot\left[\matrix{y_f^*(t)-y_f \cr \dot {y}_f^*(t)-\dot y_f 
+% \cr \ddot y_f^*(t)-\ddot y_f \cr y_f^{*(3)}(t)-y_f^{(3)}}\right]}}=w_{FF}+\tilde{K}\,\Delta 
+% z$$
+% 
+% with the gain $K$ (or the rearranged $\tilde K$) that stabilized the error 
+% dynamics asymptotically (use LQR feedback as before). Then, a polynomial shaped 
+% reference trajectory between two operating points can be constructed like this:
+% 
+% $$y_f^*(t)=(y_{f,1}-y_{f,0})\,p(t)+y_{f,0}\quad\text{with}\quad p(0)=0,p(T)=1 
+% \\\Rightarrow\quad y_f^{*(i)}(t)=(y_{f,1}-y_{f,0})\,p^{(i)}(t)\quad\text{with}\quad 
+% p^{(i)}(0)=0,p^{(i)}(T)=0\,\forall i\in\{1,\ldots,4\}$$
+% 
+% $$p(t)=\sum_{k=0}^{2r+1}\,c_k\,\left(\frac tT\right)^k\quad\text{with}\quad 
+% c_k\text{ s.t. BCs}$$
+% 
+% where $y_{f,0}$ is the starting and $y_{f,1}$ the final operating point at 
+% time $T$. Note that the polynomial function $p$ has an order related to the 
+% number of boundary conditions (BCs).
+% 
+% _*(3.7)* Perform feedforward control for the transition between operating 
+% points by constructing a polynomial shape reference trajectory!_
+
+% Coefficient calculation:
+r = 4; % required derivatives
+m = 2*(r+1); % interpolation order
+coeffmatT = zeros(r+1,m); % initilization (case t=T)
+coeffmat0 = zeros(r+1,m); % initilization (case t=0)
+coeffmatT(1,:) = ones(1,m); % start: zero derivative
+coeffmat0(1,end) = polyval(coeffmatT(1,:),0);
+for i=1:r
+    tmpder = polyder(coeffmatT(i,1:end-i+1)); % derivative polynomial
+    coeffmatT(i+1,:) = [tmpder zeros(1,i)]; % get derivative coefficients
+    coeffmat0(i+1,end-i) = polyval(tmpder,0); % set t=0
+end
+% Interpolation procedure:
+syms t T positive % time argument
+Ck = [coeffmatT;coeffmat0]\[1;zeros(2*r+1,1)]; % coefficient solution
+% pol = zeros(1,m);
+for i = 1:m
+    pol(i) = (t/T)^(m-i);
+end
+p = vpa(pol*Ck,4) % variable precision output
+dp = diff(p,t); ddp = diff(p,t,2); d3p = diff(p,t,3); d4p = diff(p,t,4);
+Ttmp = 1; figure
+subplot(2,1,1); hold on
+fplot(subs(p,T,Ttmp),[0 Ttmp],'LineWidth',1.5)
+fplot(subs(dp,T,Ttmp),[0 Ttmp],'LineWidth',1.5)
+fplot(subs(ddp,T,Ttmp),[0 Ttmp],'LineWidth',1.5)
+grid; title('Check polynomial solution');
+legend({'$p(t)$','$\dot p(t)$','$\ddot p(t)$'},'interpreter','latex','location','southwest')
+subplot(2,1,2); hold on
+fplot(subs(d3p,T,Ttmp),[0 Ttmp],'LineWidth',1.5)
+fplot(subs(d4p,T,Ttmp),[0 Ttmp],'LineWidth',1.5)
+grid; xlabel('t/T'); 
+legend({'$p^{(3)}(t)$','$p^{(4)}(t)$'},'interpreter','latex')
+% Reference trajectory:
+yF = sym('yF', [3 1]);
+y0 = sym('y0', [3 1]);
+Yf = (yF - y0)*p + y0;
+dYf = (yF - y0)*dp;
+ddYf = (yF - y0)*ddp;
+d3Yf = (yF - y0)*d3p;
+d4Yf = (yF - y0)*d4p;
+% Generate Matlab function:
+wFF = d4Yf;
+zdes = [Yf(1) dYf(1) ddYf(1) d3Yf(1) ...
+        Yf(2) dYf(2) ddYf(2) d3Yf(2) ...
+        Yf(3) dYf(3) ddYf(3) d3Yf(3)]'; % sort for block structure
+matlabFunction(wFF,zdes,'File','functions/feedforward_poly','Vars',{t,T,y0,yF});
+%% 
+% The feedforward control procedure is realized via Simulink analogous to the 
+% former case:
+% 
+% 
+% 
+% In comparison to the first controller realization, an extra block for generating 
+% the feedforward control and the flat output reference trajectory signals has 
+% been added. These are directly the outputs of the constructed _feedforward_ 
+% Matlab function with its main input as the simulation time and the operating 
+% point parameter specifiaction.
+
+% Feedforward simulation parameters:
+Tf = 50; % end time
+ff_param.T0 = 30;
+ff_param.TF = 40;
+ff_param.y0 = [10;2;-3];%[0;0;-5];
+ff_param.yF = [18;18;-10];
+% Execute Simulink model:
+% sim('crane_mdl_feedforward')
+% time = StateData.time;
+% xsim = [StateData.signals(1).values(:,1) StateData.signals(2).values(:,1) StateData.signals(3).values(:,1) ...
+%         StateData.signals(4).values(:,1) StateData.signals(5).values(:,1)];
+% vsim = [StateData.signals(1).values(:,2) StateData.signals(2).values(:,2) StateData.signals(3).values(:,2) ...
+%         StateData.signals(4).values(:,2) StateData.signals(5).values(:,2)];
+% ysim = OutData.signals.values;
+% zrefsim = TrackingData.signals(1).values;
+% wFFsim = TrackingData.signals(2).values;
+% % Evaluated results:
+% figure
+% subplot(3,1,1); hold on
+% plot(time,ysim(:,1),'LineWidth',2); plot(time,zrefsim(:,1),'--','LineWidth',1.5); grid
+% line([ff_param.T0 ff_param.T0],[0 20],'Color','black','LineStyle','--')
+% line([ff_param.TF ff_param.TF],[0 20],'Color','black','LineStyle','--')
+% title('x-Position of load'); ylabel('$x_l$');
+% legend({'real','reference'},'interpreter','latex','location','southeast')
+% subplot(3,1,2); hold on
+% plot(time,ysim(:,2),'LineWidth',2); plot(time,zrefsim(:,5),'--','LineWidth',1.5); grid
+% line([ff_param.T0 ff_param.T0],[0 20],'Color','black','LineStyle','--')
+% line([ff_param.TF ff_param.TF],[0 20],'Color','black','LineStyle','--')
+% title('y-Position of load'); ylabel('$y_l$')
+% subplot(3,1,3); hold on
+% plot(time,ysim(:,3),'LineWidth',2); plot(time,zrefsim(:,9),'--','LineWidth',1.5); grid
+% line([ff_param.T0 ff_param.T0],[0 -15],'Color','black','LineStyle','--')
+% line([ff_param.TF ff_param.TF],[0 -15],'Color','black','LineStyle','--')
+% ylim([-15 0]); title('z-Position of load'); ylabel('$z_l$'); xlabel('time $t$')
+%% 
+% It is evident that the reference tracking and feedforward based change between 
+% operating points holds a better performance and offers more convenient tuning 
+% opportunities (e.g. exact transfer time) than a simple static state feedback 
+% control in the linera domain.
+%% 
+% *EXTRA:* Circular movement (alternative trajectory shape)
+
+% Circle trajectory;
+syms R omeg xc yc zc real
+xcirc = R*sin(omeg*t) + xc;
+ycirc = R*cos(omeg*t) + yc;
+zcirc = zc;
+% Reference trajectory:
+Yf = [xcirc ycirc zcirc]';
+dYf = diff(Yf,t);
+ddYf = diff(dYf,t);
+d3Yf = diff(ddYf,t);
+d4Yf = diff(d3Yf,t);
+% Generate Matlab function:
+wFF = d4Yf;
+zdes = [Yf(1) dYf(1) ddYf(1) d3Yf(1) ...
+        Yf(2) dYf(2) ddYf(2) d3Yf(2) ...
+        Yf(3) dYf(3) ddYf(3) d3Yf(3)]'; % sort for block structure
+matlabFunction(wFF,zdes,'File','functions/feedforward_circ','Vars',{t,[xc yc zc]',R,omeg});
+% Parameters:
+T0 = 25; % start time
+ffc_param.y0 = [10;15;-10];%[0;0;-5];
+ffc_param.T0 = T0;
+ffc_param.posc = [10 10 -10]'; % center of circle
+ffc_param.R = 5; % radius
+ffc_param.omeg = 1; % frequency
+% Execute Simulink model:
+% sim('crane_mdl_feedforward_Circle')
+% time = StateData.time;
+% xsim = [StateData.signals(1).values(:,1) StateData.signals(2).values(:,1) StateData.signals(3).values(:,1) ...
+%         StateData.signals(4).values(:,1) StateData.signals(5).values(:,1)];
+% vsim = [StateData.signals(1).values(:,2) StateData.signals(2).values(:,2) StateData.signals(3).values(:,2) ...
+%         StateData.signals(4).values(:,2) StateData.signals(5).values(:,2)];
+% ysim = OutData.signals.values;
+% zrefsim = TrackingData.signals(1).values;
+% wFFsim = TrackingData.signals(2).values;
+% % Evaluation:
+% figure
+% subplot(3,1,1); hold on
+% plot(time,ysim(:,1),'LineWidth',2); plot(time,zrefsim(:,1),'--','LineWidth',1.5); grid
+% line([ffc_param.T0 ffc_param.T0],[0 20],'Color','black','LineStyle','--')
+% title('x-Position of load'); ylabel('$x_l$');
+% legend({'real','reference'},'interpreter','latex','location','southeast')
+% subplot(3,1,2); hold on
+% plot(time,ysim(:,2),'LineWidth',2); plot(time,zrefsim(:,5),'--','LineWidth',1.5); grid
+% line([ff_param.T0 ff_param.T0],[0 20],'Color','black','LineStyle','--')
+% line([ff_param.TF ff_param.TF],[0 20],'Color','black','LineStyle','--')
+% title('y-Position of load'); ylabel('$y_l$')
+% subplot(3,1,3); hold on
+% plot(time,ysim(:,3),'LineWidth',2); plot(time,zrefsim(:,9),'--','LineWidth',1.5); grid
+% line([ff_param.T0 ff_param.T0],[0 -15],'Color','black','LineStyle','--')
+% line([ff_param.TF ff_param.TF],[0 -15],'Color','black','LineStyle','--')
+% ylim([-15 0]); title('z-Position of load'); ylabel('$z_l$'); xlabel('time $t$')
+%% Matis : MFC
+
+% Symbolic variables:
+syms x_star y_star l_star a_star b_star real % position states
+syms vx_star vy_star dl_star da_star db_star real % velocity states
+syms u1_star u2_star u3_star real % inputs
+z_star = [x_star vx_star y_star vy_star l_star dl_star a_star da_star b_star db_star]';
+u_star = [u1_star u2_star u3_star]';
+
+% Extend state space:
+syms v_star dv_star real  % new virtual velocity state
+zex_star = [z_star; v_star; dv_star];
+
+% New input:
+syms w1_star w2_star w3_star real
+w_star = [w1_star w2_star w3_star]';
+
+
+% outut
+h_star = [x_star+l_star*sin(b_star);
+          y_star+l_star*sin(a_star)*cos(b_star);
+          -l_star*cos(a_star)*cos(b_star)];
+
+%f = subs(dyn,u,[0 0 0]')
+beta_ex4_star  = subs(beta_ex4, zex, zex_star);
+alpha_ex4_star = subs(alpha_ex4, zex, zex_star)
+
+beta_tilde_ex4 = beta_ex4 - beta_ex4_star + (alpha_ex4 - alpha_ex4_star) * u_star;
+u_tilde = simplify(alpha_ex4\(-beta_tilde_ex4 + w_star));
+%% 
+% We need a new u3des because of the fact that a ---> a_tilde
+
+
+u3des_tilde = simplify(solve(ddy(3) - v + v_star,u3));
+%% 
+% We create the last fonction we need in the PCL loop
+
+%matlabFunction(subs(uctrl,g0,G0),'File','functions/flat_control','Vars',[zex;w]);
+matlabFunction(subs(u_tilde,g0,G0),'File','functions/flat_control_PCL','Vars',[zex_star; zex; u_star; w_star]);
+matlabFunction(subs(u3des_tilde,g0,G0),'File','functions/ext_control_PCL','Vars',[zex(1:end-1); v_star ;u1;u2]);
+
+
+
+%% MFC : Efficient implementation-Linear Model
+
+syms yf1_star yf2_star yf3_star dyf1_star dyf2_star dyf3_star ddyf1_star ddyf2_star ddyf3_star d3yf1_star d3yf2_star d3yf3_star real
+syms d4yf1_des d4yf2_des d4yf3_des real
+
+Z_star = [yf1_star yf2_star yf3_star dyf1_star dyf2_star dyf3_star ddyf1_star ddyf2_star ddyf3_star d3yf1_star d3yf2_star d3yf3_star]';
+
+%% HIGH GAIN CONTROL
+
+epsilon = 0.4;
+n = 4;
+
+highgain_espsilons = [1/epsilon^n 1/epsilon^(n - 1) 1/epsilon^(n - 2) 1/epsilon^(n - 3)];
+
+Kpcl = zeros(3, 12);
+Kpcl(1, 1:4)  = Klqr(1, 1:4)  .*  highgain_espsilons;
+Kpcl(2, 5:8)  = Klqr(2, 5:8)  .*  highgain_espsilons;
+Kpcl(3, 9:12) = Klqr(3, 9:12) .*  highgain_espsilons;
+Kpcl
+
+% Initial state 
+z0 = zeros(1, 12);
+%z0(9) = -5;
+
+x0 = zeros(10, 1);
+x0(5) = 5;
+
+\end{MATLAB}

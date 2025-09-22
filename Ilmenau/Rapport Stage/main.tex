@@ -1,10 +1,18 @@
 \documentclass[a4paper, 12pt]{report}
 
 % ====================== PACKAGES ======================
-\usepackage[french]{babel} % French language support
+\usepackage[english]{babel} % English and French language support
 \usepackage[utf8]{inputenc} % UTF-8 encoding
 \usepackage[T1]{fontenc} % Character encoding
 \usepackage{amsmath, amssymb, amsfonts} % Math packages
+\usepackage{amsthm} % Theorem package
+\newtheorem{remark}{Remark}
+\newtheorem{Proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{example}{Example}
+\newtheorem{lemma}{Lemma}
 \usepackage{graphicx} % Required for inserting images
 \usepackage{float} % Improved handling of floating elements
 \usepackage{hyperref} % For hyperlinks
@@ -13,6 +21,7 @@
 \usepackage{setspace} % Set line spacing
 \usepackage{abstract} % Abstract layout
 \usepackage{color, xcolor} % Color handling
+\usepackage{tcolorbox} % Colored boxes
 \usepackage{lipsum} % For generating filler text
 \usepackage{fancyhdr} % Fancy headers and footers
 \usepackage{titlesec} % Section formatting
@@ -65,6 +74,41 @@
     morekeywords={Material, self},
 }
 
+% Définir les couleurs pour le code MATLAB
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Définir le style pour MATLAB
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+% Définir l'environnement MATLAB
+\lstnewenvironment{MATLAB}[1][]
+{
+    \lstset{
+        style=mystyle,
+        language=Matlab,
+        #1
+    }
+}{} % End of MATLAB environment
 
 % ====================== HEADER AND FOOTER ======================
 \pagestyle{fancy} % Enable fancy headers and footers
@@ -145,8 +189,21 @@
 
 % Abstract section
 \begin{abstract}
-    Dans un monde du plus en plus adapté aux personnes à mobilités réduite, les efforts continuent sur tout les fronts. C'est de la volontée de voir leur visage éclairé par un sourir que nait WanderCraft, une entrprise innovante développant des exosquelettes autostabilisés pour ceux qui ne peuvent pas marcher. Robustifier et stabiliser la commande d'un tel robot encourrage l'innovation dans de nombreux domaines et sur de nombreuses techniques, parmis eux se développe une branche de vision répondant aux problèmes posés via le développement de l'odométrie et de la cartographie de l'éxosquelette. C'est dans cette recherche d'amélioration de la vision que s'incrit mon stage chez wWandercraft. Le stage Ca tue des bébé lapin nains
+    The project aimed to address the challenges posed by algebraic 
+    loops in sliding mode control algorithms. These loops occur when 
+    state-dependent perturbations interact with the control signal, 
+    creating circular dependencies that complicate system stability 
+    and performance. The research explored dynamic methods and international 
+    collaborations to simplify convergence proofs without redesigning the 
+    entire controller. This work is crucial for enhancing the robustness 
+    and efficiency of control systems in various industrial applications.
+    The other topic of the report is the peaking phenomenon in Model Following
+    Control (MFC) and its implementation on a Matlab simulation and a real
+    system.
 \end{abstract}
+
+
+
 
 % Table of contents
 \tableofcontents
@@ -154,7 +211,6 @@
 % \setcounter{page}{0}
 
 \listoffigures
-\listoftables
 
 % Espacement entre les lignes d'un tableau
 \renewcommand{\arraystretch}{1.5}
@@ -167,14 +223,12 @@
 %\setcounter{page}{0}
 \newpage
 
-\input{Sections/presentation}
 \input{Sections/présentation_team_et_cadre-scientifique}
+\input{Sections/presentation}
 
 \input{Sections/section1}
 \input{Sections/section2}
 %\input{Sections/section3}
-
-\input{Sections/bilan_perso}
 
 \input{Sections/conclusion}
 

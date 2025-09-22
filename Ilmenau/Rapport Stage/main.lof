@@ -1,0 +1,24 @@
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Real 3-dimensional overhead crane.\relax }}{8}{figure.caption.4}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Model Following Control block diagram with model control loop process and control loop \cite {Willkomm2023MFC}.\relax }}{8}{figure.caption.5}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Simpler Model Following Control block diagram with model control loop process and control loop \cite {Tietze2023CruiseControl}.\relax }}{12}{figure.caption.6}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Simpler MFC Matlab Simulink implementation from \cite {Tietze2023CruiseControl}.\relax }}{12}{figure.caption.7}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Schematic representation of the crane system with trolley and load positions.\relax }}{15}{figure.caption.8}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Simulink model of the MFC loop.\relax }}{18}{figure.caption.9}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Desired trajectories of the load.\relax }}{19}{figure.caption.10}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Difference between desired states and model states.\relax }}{20}{figure.caption.11}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Input for set-point tracking using high-gain control.\relax }}{20}{figure.caption.12}%
+\contentsline {figure}{\numberline {3.10}{\ignorespaces Input for set-point tracking using MFC.\relax }}{21}{figure.caption.13}%
+\contentsline {figure}{\numberline {3.11}{\ignorespaces Zoom on the crane's trolley.\relax }}{22}{figure.caption.14}%
+\contentsline {figure}{\numberline {3.12}{\ignorespaces Zoom on the crane's X and Y motors.\relax }}{22}{figure.caption.15}%
+\contentsline {figure}{\numberline {3.13}{\ignorespaces Real plant experiment - trajectory tracking without peaking phenomenon.\relax }}{23}{figure.caption.16}%
+\contentsline {figure}{\numberline {3.14}{\ignorespaces Real plant experiment - trajectory tracking with peaking phenomenon.\relax }}{23}{figure.caption.17}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

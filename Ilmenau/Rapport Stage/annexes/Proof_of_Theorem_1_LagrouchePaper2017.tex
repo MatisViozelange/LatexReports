@@ -1,0 +1,258 @@
+\chapter{Proof of Theorem 1 (Lagrouche et al., 2017)}
+\label{app:proof_theorem1}
+This proof is not given in the original paper \cite{Laghrouche2017},
+We introduce the positive definite and homogeneous function of degree \(2p_{r+1}\):
+\begin{equation}
+V(z, \xi) = V_1 + \frac{1}{2} \xi^2
+\end{equation}
+Calculating the time derivative:
+\begin{equation}
+\dot{V} = \dot{V}_1 + \xi \dot{\xi}
+\end{equation}
+\begin{equation}
+= \dot{V}_1 - k_I \xi \partial_r V_1(z)
+\end{equation}
+where \(k_I \xi = \dot{z}_r - k_p u_0(z)\)
+Thus,
+\begin{equation}
+\dot{V} = \dot{V}_1 + (k_p u_0(z) - \dot{z}_r) \partial_r V_1(z)
+\end{equation}
+\begin{equation}
+= \dot{V}_1 + k_p \partial_r V_1(z) u_0 - \dot{z}_r \partial_r V_1(z)
+\end{equation}
+
+\begin{equation}
+= \dot{V}_1 + (k_p - 1) \partial_r V_1(z) u_0 \leq -c V_1^\alpha
+\end{equation}
+
+
+We define the final candidate Lyapunov function \(L\):
+\begin{equation}
+W(z, \xi) = V(z, \xi)^{2-\alpha} - A z_r \xi
+\end{equation}
+where \(W\) is smooth except at the origin and homogeneous regarding the function \(\Psi(z, \xi)\) of degree
+\begin{equation}
+2(2-\alpha) p_{r+1} = p_r + p_{r+1}, \quad W > 0 \text{ because } V > 0 \text{ for a small enough value of } A
+\end{equation}
+
+
+Moreover, : 
+
+\begin{align*}
+    \dot{W}(z, \xi) &= (2-\alpha) V^{1-\alpha} \dot{V} - A (\dot{z}_r \xi + z_r \dot{\xi}) \\
+    &= (2-\alpha) V^{1-\alpha} \dot{V} - A (k_p u_0 + k_I \xi) \xi + A z_r k_i \partial_r V_1(z)
+\end{align*}
+
+
+and \(\dot{V} \leq -c V_1^\alpha\), Thus,
+\begin{equation}
+\dot{W} \leq -c (2-\alpha) V^{1-\alpha} V_1^\alpha - A k_p u_0 \xi + A k_I \xi \partial_r V_1 - A k_I \frac{\xi^2}{2}
+\end{equation}
+
+
+Since \(V \geq V_1\) and \(2 - \alpha > 0\),
+\begin{equation}
+V^{1-\alpha} \geq V_1^{1-\alpha} > 0
+\end{equation}
+Thus,
+\begin{equation}
+(2-\alpha) V^{1-\alpha} \geq V_1^{1-\alpha}
+\end{equation}
+Therefore,
+\begin{equation}
+- c (2-\alpha) V^{1-\alpha} V_1^\alpha \leq -c V_1
+\end{equation}
+Which gives:
+\begin{equation}
+\dot{W} \leq -c V_1 + A k_I |z_r \partial_r V_1(z)| - A k_p u_0 \xi - A k_I \xi^2
+\end{equation}
+
+Knowing that:
+\begin{equation}
+- A k_p u_0 \xi - A k_I \xi^2 \leq A k_p^2 \frac{u_0^2}{k_I} - \frac{1}{2} A k_I \xi^2
+\end{equation}
+Thus, we can write:
+
+
+\begin{equation}
+\dot{W} \leq -c V_1 + A k_p^2 \frac{u_0^2}{k_I} + A k_I |z_r \partial_r V_1(z)| - \frac{1}{2} A k_I \xi^2
+\end{equation}
+
+
+It is easy to prove that:
+\begin{equation}
+z \rightarrow -c V_1 + A k_p^2 \frac{u_0^2}{k_I} + A k_I |z_r \partial_r V_1(z)| 
+\end{equation}
+is homogeneous of degree \(2 p_{r+1}\) with respect to \((\delta_{\epsilon})_{\epsilon > 0}\).
+
+
+Let \(R_p\) and \(N_p\) be the unit balls of \(\mathbb{R}^r\) and \(\mathbb{R}^{r+1}\) associated with the weights \(p_i\) for \(i \in [1, r]\) and \(i \in [1, r+1]\) respectively.
+Let :
+\begin{equation}
+V_m = \min_{(z, \xi) \in N_p} V(z, \xi)^{2-\alpha}
+\end{equation}
+\begin{equation}
+Z_m = \max_{(z, \xi) \in N_p} |z_r \xi|
+\end{equation}
+\begin{equation}
+Z_m^1 = \max_{z \in R_p} |z_r \partial_r V_1(z)|
+\end{equation}
+\begin{equation}
+Z_m^2 = \max_{z \in R_p} u_0^2
+\end{equation}
+\begin{equation}
+V_m^1 = \min_{z \in R_p} V_1
+\end{equation}
+
+Since \(V > 0\), \(V_m > 0\), we can always choose \(A\) such that:
+\begin{equation}
+A \leq \min \left( \frac{V_m}{2 Z_m}, \frac{c k_I V_m^{1}}{2 \left( k_p^2 Z_m^2 + k_I^2 Z_m^2 \right)}, \frac{c}{2 k_I} \right)
+\end{equation}
+Then,
+\begin{equation}
+A \leq \frac{V_m}{2 Z_m} \implies A Z_m < V_m
+\end{equation}
+Since \(A z_r \xi \leq A Z_m < V_m\),
+\begin{equation}
+- A z_r \xi > -V_m
+\end{equation}
+Thus,
+\begin{equation}
+W = V^{2-\alpha} - A z_r \xi > V^{2-\alpha} - V_m
+\end{equation}
+Since \(V^{2-\alpha} \geq V_m\), it follows that:
+\begin{equation}
+V^{2-\alpha} - V_m \geq 0 \implies W > 0
+\end{equation}
+
+\begin{equation}
+\dot{W} \leq -\frac{1}{2} \left( c V_1 + A k_I \xi^2 \right) + A \left( \frac{k_p^2 u_0^2}{k_I} + k_I |z_r \partial_r V_1| \right) - \frac{1}{2} c V_1
+\end{equation}
+Since \(0 \leq \frac{1}{2} \frac{k_p^2 u_0^2}{k_I} + k_I |z_r \partial_r V_1| \leq \frac{k_p^2 Z_m^2}{k_I} + k_I Z_m^1\),
+\begin{equation}
+0 \leq A \leq \frac{c k_I V_m^{1}}{2 \left( \frac{k_p^2 Z_m^2}{k_I} + k_I^2 Z_m^2 \right)}
+\end{equation}
+Thus,
+\begin{equation}
+A \left( \frac{k_p^2 u_0^2}{k_I} + k_I |z_r \partial_r V_1| \right) \leq \frac{c k_I V_m^{1}}{2k_I} = \frac{c V_m^1}{2}
+\end{equation}
+
+
+Hence,
+\begin{equation}
+\dot{W} \leq -\frac{1}{2} \left( c V_1 + A k_I \xi^2 \right)
+\end{equation}
+
+The homogeneity of \(W\) implies the global validity of the inequality.
+
+
+Let's show that:
+\begin{equation}
+\frac{1}{2} V^{2-\alpha} \leq W \leq \frac{3}{2} V^{2-\alpha}
+\end{equation}
+
+
+\begin{equation}
+W = V^{2-\alpha} - A z_r \xi
+\end{equation}
+\begin{equation}
+= \frac{1}{2} V^{2-\alpha} + \left( \frac{1}{2} V^{2-\alpha} - A z_r \xi \right)
+\end{equation}
+
+Since \(A \leq \frac{V_m}{2 Z_m}\),
+\begin{equation}
+A Z_m \leq \frac{1}{2} V_m \leq \frac{1}{2} V^{2-\alpha}
+\end{equation}
+Thus, \(A Z_m \geq A z_r \xi\),
+\begin{equation}
+\frac{1}{2} V^{1-\alpha} - A z_r \xi \geq 0
+\end{equation}
+Therefore,
+\begin{equation}
+W \geq \frac{1}{2} V^{2-\alpha}
+\end{equation}
+
+On the same way,
+\begin{equation}
+\dot{W} = \frac{3}{2} V^{2-\alpha} - \left( \frac{1}{2} V^{2-\alpha} + A z_r \xi \right) 
+\end{equation}
+Since,
+\begin{equation}
+\dot{W} \leq \frac{3}{2} V^{2-\alpha}
+\end{equation}
+Therefore, we have:
+\begin{equation}
+\frac{1}{2} V^{2-\alpha} \leq W \leq \frac{3}{2} V^{2-\alpha}
+\end{equation}
+
+Now we have to show that:
+\begin{equation}
+\dot{W} \leq -A k_I V
+\end{equation}
+We know that:
+\begin{equation}
+\dot{W} \leq -\frac{(c V_1 + A k_I \xi^2)}{2} \implies \dot{W} \leq -\frac{c}{2} V_1 - \frac{A k_I}{2} \xi^2
+\end{equation}
+Given \(V = V_1(z) + \frac{1}{2} \xi^2 \implies V > V_1\),
+
+
+\begin{equation}
+A \leq \frac{c}{2 k_I} \implies \frac{c}{2 A k_I} \geq 1
+\end{equation}
+\begin{equation}
+\implies \frac{c}{2 A k_I} V_1 + \frac{1}{2} \xi^2 \geq V_1 + \frac{1}{2} \xi^2
+\end{equation}
+\begin{equation}
+\implies -A k_I \left[ \frac{c}{2 A k_I} V_1 + \frac{1}{2} \xi^2 \right] \leq -A k_I \left[ V_1 + \frac{1}{2} \xi^2 \right]
+\end{equation}
+Therefore, it follows that:
+\begin{equation}
+\dot{W} \leq -A k_I V
+\end{equation}
+
+
+We have the two inequalities:
+\begin{align*}
+    &\frac{1}{2} V^{2-\alpha} \leq W \leq \frac{3}{2} V^{2-\alpha} \quad (1) \\
+    &\dot{W} \leq -A k_I V \quad (2)
+\end{align*}
+
+So we can write the final inequality as:
+\begin{equation}
+\dot{W} \leq -d W^{\frac{1}{2-\alpha}}
+\end{equation}
+where \(d = \frac{A k_I}{4}\) (since \(2-\alpha > 1\)).
+Let \(f(x) = x^{\frac{1}{2-\alpha}}\), which is an increasing function.
+Thus,
+\begin{equation}
+\left(\frac{1}{2}\right)^{\frac{1}{2-\alpha}} V \leq W^{\frac{1}{2-\alpha}} \leq \left(\frac{3}{2}\right)^{\frac{1}{2-\alpha}} V
+\end{equation}
+
+\begin{align*}
+&\text{Since } 2 - \alpha > 1 \implies \frac{1}{2-\alpha} < 1 \\
+&\text{If } \frac{1}{2} \leq 1 \implies \left(\frac{1}{2}\right)^{\frac{1}{2-\alpha}} > \frac{1}{2} \implies \frac{1}{2} V^ \leq \left(\frac{1}{2}\right)^{\frac{1}{2-\alpha}} V \\
+&\text{If } \frac{3}{2} > 1 \implies \left(\frac{3}{2}\right)^{\frac{1}{2-\alpha}} < \frac{3}{2} \implies \frac{3}{2} V \leq  \left(\frac{3}{2}\right)^{\frac{1}{2-\alpha}} V
+\end{align*}
+By sandwich theorem:
+\begin{equation}
+\frac{1}{2} V\leq W^{\frac{1}{2-\alpha}} \leq \frac{3}{2} V
+\end{equation}
+Therefore:
+\begin{equation}
+-\dot{W} \geq A k_I V \implies -\frac{1}{A k_I}\dot{W} \geq V \implies -\frac{3 A k_I}{2} \dot{W} \geq \frac{3}{2} V \geq W^{\frac{1}{2-\alpha}}
+\end{equation}
+
+Hence,
+\begin{equation}
+\dot{W} \leq -\frac{2 A k_I}{3} W^{\frac{1}{2-\alpha}}
+\end{equation}
+\begin{align}
+    \frac{2}{3} > \frac{1}{4} \implies -\frac{2}{3} < -\frac{1}{4}
+\end{align}
+
+In the end:
+\begin{equation}
+\dot{W} \leq -\frac{A k_I}{4} W^{\frac{1}{2-\alpha}}
+\end{equation}
+This concludes the proof of the Theorem 
+

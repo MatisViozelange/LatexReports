@@ -1,0 +1,42 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{Acknowledgements}{4}{chapter*.3}%
+\contentsline {chapter}{\numberline {1}Presentation of the Research Team and Scientific Context}{5}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Introduction}{6}{chapter.2}%
+\contentsline {chapter}{\numberline {3}Model Following Control Theory and Peakin Phenomenon}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Introduction}{7}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Context and Motivation}{7}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Crane Presentation}{7}{subsection.3.1.2}%
+\contentsline {section}{\numberline {3.2}Model Following Control}{8}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Overview}{8}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}General Equation}{8}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Model Control Loop (MCL)}{9}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Process Control Loop (PCL)}{10}{subsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.2.5}A Simpler Design}{11}{subsection.3.2.5}%
+\contentsline {subsection}{\numberline {3.2.6}High Gain Control Comparison}{13}{subsection.3.2.6}%
+\contentsline {subsection}{\numberline {3.2.7}Peaking Phenomenon and Advantages of MFC}{13}{subsection.3.2.7}%
+\contentsline {section}{\numberline {3.3}Crane Overview}{15}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Crane Model}{15}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Feedback Linearization and Dynamic Extension}{17}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}Implementation on a Crane Simulation}{18}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Results}{18}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Simulation Results}{18}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Real Plant Experiment}{21}{subsection.3.5.2}%
+\contentsline {section}{\numberline {3.6}Conclusion on the MFC Strategy}{24}{section.3.6}%
+\contentsline {chapter}{\numberline {4}Local Stability of high order super-twisting with time and state dependent perturbations}{25}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Introduction}{25}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Context and problem statement}{26}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}High Order Super Twisting algorithm}{26}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}The Super Twisting case with time and state dependent perturbation}{29}{subsection.4.2.2}%
+\contentsline {subsubsection}{Stability for Unbounded Perturbations : Sliding Mode case}{29}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Stability for Unbounded Perturbations : Super Twisting case}{30}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}Algebraic Loops in High Order Super Twisting}{33}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}First step : taking an easy class of perturbation to handle}{33}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Second step : extending the result to a more general class of perturbation, main ideas}{35}{subsection.4.3.2}%
+\contentsline {section}{\numberline {4.4}Conclusion and future work}{36}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Personal Conclusion}{37}{chapter.5}%
+\contentsline {chapter}{Conclusion}{38}{chapter*.18}%
+\contentsline {part}{Appendices}{42}{part*.20}%
+\contentsline {chapter}{\numberline {A}User notice to launch the MFC on the Real Plant of the Crane System}{42}{appendix.A}%
+\contentsline {chapter}{\numberline {B}MATLAB Environment}{44}{appendix.B}%
+\contentsline {chapter}{\numberline {C}Proof of Theorem 1 (Lagrouche et al., 2017)}{55}{appendix.C}%
+\contentsline {chapter}{\numberline {D}Proof of SMC Local Stability (from \cite {tietze2025dynamic})}{59}{appendix.D}%

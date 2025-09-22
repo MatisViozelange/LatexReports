@@ -2,8 +2,10 @@
 
 \bibitem{Knierim2010Crane}
 Karl~Lukas Knierim, Kai Krieger, and Oliver Sawodny.
-\newblock Flatness based control of a 3-dof overhead crane with velocity controlled drives.
-\newblock In {\em Proceedings of the 5th IFAC Symposium on Mechatronic Systems}, pages 363--368, Cambridge, MA, USA, 2010. IFAC.
+\newblock Flatness based control of a 3-dof overhead crane with velocity
+  controlled drives.
+\newblock In {\em Proceedings of the 5th IFAC Symposium on Mechatronic
+  Systems}, pages 363--368, Cambridge, MA, USA, 2010. IFAC.
 
 \bibitem{Noack2020}
 Matti Noack and Johann Reger.
@@ -13,13 +15,17 @@ Matti Noack and Johann Reger.
 
 \bibitem{Tietze2023CruiseControl}
 Niclas Tietze, Kai Wulff, and Johann Reger.
-\newblock High-gain model-following control for cruise control: Efficient implementation and robustness.
-\newblock {\em CDC Proceedings or Preprint (specific venue not identified)}, 2023.
-\newblock Preprint. Technical University of Ilmenau. Contact: kai.wulff@tu-ilmenau.de.
+\newblock High-gain model-following control for cruise control: Efficient
+  implementation and robustness.
+\newblock {\em CDC Proceedings or Preprint (specific venue not identified)},
+  2023.
+\newblock Preprint. Technical University of Ilmenau. Contact:
+  kai.wulff@tu-ilmenau.de.
 
 \bibitem{Willkomm2023MFC}
 Julian Willkomm.
 \newblock {\em Model-Following Control for a Class of Nonlinear Systems}.
-\newblock Dissertation, Technische Universität Ilmenau, Ilmenau, Germany, March 2023.
+\newblock Dissertation, Technische Universität Ilmenau, Ilmenau, Germany,
+  March 2023.
 
 \end{thebibliography}

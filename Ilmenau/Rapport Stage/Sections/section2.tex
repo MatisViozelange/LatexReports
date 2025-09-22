@@ -1,2 +1,819 @@
-\chapter{Local Stability of high order super-twisting 
-         with time and state dependent perturbations}
+
+
+\chapter{Local Stability of high order super-twisting with time and state dependent perturbations}
+
+\section{Introduction} 
+
+This chapter presents the other problem I had to work on during my internship. It is based on the articles by my supervisor \cite{tietze2024local}, \cite{tietze2024localStabilisation}, and \cite{tietze2025dynamic}. The work starts from the reflection that in the proof given in the previous work on the sliding mode algorithm \cite{Moreno2012}, the perturbation is assumed to be bounded and only time dependent. This is a strong assumption, as in many practical cases, the perturbation can depend on the state of the system which leads to the creation of an algebraic loop. Let's consider the r-th order perturbed chain of integrators:
+
+\begin{equation}
+    \label{eq:perturbed_chain}
+    (S) \qquad \dot{z} = J_r z + (\Delta(t,z) + u) e_r, \quad z = (z_1, z_2, \ldots, z_r) \in \mathbb{R}^r, \; u \in \mathbb{R}
+\end{equation}
+
+where $J_r$ is the r-th Jordan block, $e_r = (0, \ldots, 0, 1)^T \in \mathbb{R}^r$ and 
+$\Delta: \mathbb{R}_+ \times \mathbb{R}^r \to \mathbb{R}$ is a perturbation. The goal is to design a 
+feedback law $u = u(t,z)$ such that the closed-loop system is finite time stable with respect to the origin.
+
+The work initiated by \cite{tietze2024local}, \cite{tietze2024localStabilisation} and 
+\cite{tietze2025dynamic} took different variations of the Sliding Mode control (SMC) algorithm and sucessfully
+proved the local finite time stability of the closed loop system. Here we are looking for the 
+same kind of proof on the same model but for the High Order Super Twisting algorithm (HOST).
+
+Several work already exist on he stability of HOST with time and state dependent perturbation, like 
+\cite{Moreno2012} for the classical Super Twisting algorithm or \cite{kamal2014higher} which extend the
+case the the r-th order. However, the proof is not complete as it does not take into account the
+algebraic loop created by the state dependence of the perturbation.
+
+The results presented in \cite{Laghrouche2017} on a different kind of HOST algorithm, gives a proof
+of global finite time convergence with the HOST defined in \cite{Hong2005}. However the proof is
+not done on a time and state dependent perturbation and uses a different strategy than the one used in
+\cite{khalil2002nonlinear} based on invariant sets constrained by a Lyapunov function.
+
+
+\newpage
+\section{Context and problem statement}
+
+We consider the perturbed chain of integrators defined in \eqref{eq:perturbed_chain} with a perturbation
+$\Delta(t,z)$ satisfying the following assumption:
+
+\begin{equation}
+    \label{eq:assumption_perturbation_sum}
+    \Delta(t,z) = \Delta_t(t) + \Delta_z(z)
+\end{equation}
+
+where $\Delta_t: \mathbb{R}_+ \to \mathbb{R}$ is a time dependent perturbation and 
+$\Delta_z: \mathbb{R}^r \to \mathbb{R}$ is a state dependent perturbation. We assume that the state \(z(t)\) 
+is always available for control. The initial value of the system is denoted by \(z_0 = z(0) \in \mathbb{R}^r\). 
+
+The Goal is to design a feedback law \(u = u_{st}(t,z)\) such that the closed-loop system is finite time stable
+with respect to the origin \(z = 0\).
+
+First, we will analyse the control law given in \cite{Laghrouche2017} and \cite{Hong2005} and their stability
+proof. Then we will try to adapt this vision to our problem and see if we can get to this result by 
+taking into account the state dependent perturbation.
+
+\subsection{High Order Super Twisting algorithm}
+
+First of all, let's define the HOST algorithm as in \cite{Laghrouche2017}.
+
+The following uses a results on stabilization theory on \ref{eq:perturbed_chain} as well as a geometric condition on the
+homogeneous stabilizing feedback.
+
+Let \(\mathcal{K} < 0\) and \(p > 0\) with \( p + (r + 1)\kappa \geq 0 \), set 
+\( \pi_i := p + (i - 1)\kappa \), \( 1 \leq i \leq r + 1 \). For \( \epsilon > 0 \), let 
+\( \delta_{\epsilon} : \mathbb{R}^r \rightarrow \mathbb{R}^r \) and \( \psi_{\epsilon} :
+ \mathbb{R}^{r+1} \rightarrow \mathbb{R}^{r+1} \) be the family of dilations associated 
+ with \( (p_1, \ldots, p_r) \) and \( (p_1, \ldots, p_{r+1}) \) respectively.
+
+
+\begin{Proposition}
+\label{prop:stabilizing_feedback}
+Let \( r \) be a positive integer. There exists a feedback law \( u_0 : \mathbb{R}^r \to \mathbb{R} \), 
+homogeneous of degree \( p_r + 1 \) with respect to \( (\delta_\epsilon)_{\epsilon > 0} \) such that the 
+closed-loop system (CI)\textsuperscript{r} with \( u_0 \) is finite time stable and the following conditions 
+hold true:
+
+\begin{enumerate}
+    \item The function \( z \mapsto Jr z + u_0(z) e_r \) is homogeneous of degree \( \kappa \) with 
+    respect to \( (\delta_\epsilon)_{\epsilon > 0} \), and there exists a continuous positive definite 
+    function \( V_1: \mathbb{R}^r \to \mathbb{R}_+ \), \( C^1 \) except at the origin, homogeneous with 
+    respect to \( (\delta_\epsilon)_{\epsilon > 0} \) of degree \( 2p_r + 1 \) such that there exists 
+    \( c > 0 \) and \( \alpha \in (0, 1) \) for which the time derivative of \( V_1 \) along non-trivial 
+    trajectories of (CI)\textsuperscript{r} verifies \( \dot{V}_1 \leq -cV_1^\alpha \).
+    \item \( z \mapsto \partial_r V_1(z) \) is homogeneous of positive degree with respect 
+    to \( (\delta_\epsilon)_{\epsilon > 0} \) and \( z \mapsto \partial_r V_1(z)u_0(z) \) is 
+    negative over \( \mathbb{R}^r \).
+\end{enumerate}
+
+
+\end{Proposition}
+
+
+We will take \( \alpha \) equal to : \( 1 + \frac{\kappa}{2p_r + 1} = \frac{1}{2} \) to get homogeneity properties
+for a Lyapunov function to be used in the proof and a condition that assure finite time convergence.
+
+\( \partial_r V_1 \) is homogeneous with respect to \( (\delta_\epsilon)_{\epsilon > 0} \) of 
+degree \( p + (r + 1)\kappa = 0 \). In \cite{Hong2005}, a feedback law \( u_0: \mathbb{R}^r \to \mathbb{R} \) 
+satisfying Condition (1) of Prop.\ref{prop:stabilizing_feedback} is explicitly built.
+
+Now we can define the HOST algorithm as follows:
+
+\begin{theorem}
+    Consider the homogeneous mapping $u_0 : \mathbb{R}^r \rightarrow \mathbb{R}$ and the continuous positive 
+    definite function $V_1 : \mathbb{R}^r \rightarrow \mathbb{R}_+$ provided by Proposition 1. For every 
+    $k_P \geq 1$ and $k_I > 0$, let $u_{ST}(\cdot)$ be the dynamic state-feedback controller defined by
+
+    \begin{align}
+        u_{ST}(t) &= k_P u_0(z(t)) + k_I \xi(t) \label{eq:u_ST} \\
+        \dot{\xi}(t) &= -k_I \partial_r V_1(z(t)), \quad \xi(0) = 0 \label{eq:xi_dot} 
+    \end{align}
+
+    and we refer to $u_{ST}$ as the \textit{HOST} controller. The feedback connection between 
+    \ref{eq:perturbed_chain} with the assumption \(\Delta(t, z) = 0\) and \eqref{eq:u_ST} gives rise to the 
+    dynamical system over $\mathbb{R}^{r+1}$ given by
+
+    \begin{align}
+        \dot{z}(t) &= J_r z(t) + (k_P u_0(z(t)) + k_I \xi(t)) e_r \label{eq:z_dot} \\
+        \dot{\xi}(t) &= -k_I \partial_r V_1(z(t)), \quad \xi(0) = 0. \label{eq:xi_dot_system}
+    \end{align}
+
+    There exist $A, d > 0$ such that, if $W : \mathbb{R}^{r+1} \rightarrow \mathbb{R}$ is defined by
+
+    \begin{equation}
+        W(z, \xi) = \left(V_1(z) + \frac{\xi^2}{2}\right)^{2-\alpha} - A z_r \xi, \label{eq:W}
+    \end{equation}
+
+    then $W$ is positive definite, $C^1$ except at the origin, homogeneous with respect 
+    to $(\psi_\varepsilon)_{\varepsilon > 0}$ and the time derivative of $W$ along non-trivial 
+    trajectories of \eqref{eq:z_dot}-\eqref{eq:xi_dot_system} verifies $\dot{W} \leq -d W^{1/(2-\alpha)}$. 
+    As a consequence, trajectories of \eqref{eq:z_dot}-\eqref{eq:xi_dot_system} converge to zero in finite 
+    time, i.e., $u_{ST}$ stabilizes \ref{eq:perturbed_chain} in finite time.
+\end{theorem}
+
+
+This theorem gives a first framework for the stability proof of the HOST algorithm. Also we can notice that 
+the control law and the condition on A and d are also given in \cite{Laghrouche2017}. The complete proof 
+is not given in \cite{Laghrouche2017} but can be found in the appendix\ref{app:proof_theorem1} with 
+the explicit values of A and d.
+
+The next step in this work is to introduce the perturbation \(\Delta(t,z)\) in the closed loop system 
+and see how it can be taken into account in the stability proof. With the assumption that the perturbation
+only depends on time \(\Delta(t,z) = \Delta_t(t)\), and it is bounded with : 
+
+\begin{equation}
+    \label{eq:assumption_perturbation_time_forLagrouche}
+    |\Delta_t(t)| \leq \delta, \quad |\dot{\Delta}_t(t)| \leq \delta_t, \quad \forall t \geq 0
+\end{equation}
+
+The solution given in \cite{Laghrouche2017} is to introduce a time scaling factor and by a change of
+variable and by using the homogeneity properties of the system, we can prove the finite time stability of the
+closed loop system. By considering the next theorem:
+
+% \begin{theorem}
+%     Consider the perturbed chain of integrators defined by \ref{eq:perturbed_chain}, where 
+%     the perturbation \(\Delta\) assures the assumption \ref{eq:assumption_perturbation_time_forLagrouche}. 
+%     Assume that there exists a continuous homogeneous feedback law \(u_0\) and a Lyapunov function \(V_1\) 
+%     verifying the assumptions (1) and (2) of Proposition \ref{prop:stabilizing_feedback} with \(p+(r+1)\kappa=0\). 
+%     Then, for every positive gains \(k_P \geq 1\) and \(k_I > 0\), there exists \(\lambda_0 > 0\) only 
+%     depending on the gains and \(\delta_t\) such that, for \(\lambda \geq \lambda_0\), the dynamic 
+%     state-feedback controller \(u_{ST}^{\lambda}(\cdot)\) defined by
+
+%     \begin{align}
+%         \label{eq:u_ST_lambda}
+%         u_{ST}^{\lambda}(t) &= \left(k_P u_0(D_{\lambda} z(t)) + k_I \xi^{\lambda}(t)\right) \\
+%         \dot{\xi}^{\lambda}(t) &= -\lambda k_I \partial_r V_1(D_{\lambda} z(t)), \quad \xi^{\lambda}(0) = 0
+%     \end{align}
+    
+%     where \(D_{\lambda} = \text{diag}(\lambda^{r-1}, \ldots, \lambda, 1)\) and stabilizes \ref{eq:perturbed_chain} in finite-time. In particular, \(u_{ST}^{\lambda}(\cdot)\) is continuous.
+% \end{theorem}
+
+% Fix \(k_P \geq 1\) and \(k_I > 0\). For every \(\lambda > 0\), consider the standard time-coordinate 
+% change of variable along trajectories of \ref{eq:perturbed_chain} defined by \(y(t) = D_{\lambda} z(t/\lambda)\). 
+% Under the hypotheses of the theorem, \ref{eq:perturbed_chain} can be rewritten as 
+
+% \begin{equation}
+%     \label{eq:perturbed_chain_scaled}
+%     \dot{y} = J_r y + (u_{\lambda} + \Delta_{\lambda}) e_r
+% \end{equation}
+
+% where one has set, for \(t \geq 0\), \(u_{\lambda}(t) := u(t/\lambda)\) and \(\Delta_{\lambda}(t) := \Delta(t/\lambda)\) with \(|\dot{\Delta}_{\lambda}| \leq \Delta_t/\lambda\).
+
+% The feedback connection between \ref{eq:perturbed_chain} and \ref{eq:u_ST_lambda} can be written as the 
+% time-varying system over \(\mathbb{R}^{r+1}\) given by
+
+% \begin{align}
+%     \label{eq:closed_loop_perturbed_scaled}
+%     \dot{y}(t) &= J_r z(t) + \left(k_P u_0(y(t)) + k_I \xi_{\lambda}(t)\right) e_r \\
+%     \dot{\xi}_{\lambda}(t) &= -k_I \partial_r V_1(y(t)) + \dot{\Delta}_{\lambda}, \quad \xi_{\lambda}(0) = \Delta_{\lambda}(0)
+% \end{align}
+
+% where \(\xi_{\lambda}(t) = \xi^{\lambda}(t/\lambda) + \Delta_{\lambda}(t)\).
+
+% Clearly, \ref{eq:closed_loop_perturbed_scaled} corresponds to the differential 
+% inclusion \ref{eq:z_dot}-\ref{eq:xi_dot_system} perturbed by the time-varying vector field over 
+% \(\mathbb{R}^{r+1}\) given by \((0, \cdots, 0, \dot{\Delta}_{\lambda}(t))^T\) or, equivalently, by 
+% the multifunction : 
+
+% \begin{equation}
+%      (0, \cdots, 0, [-\Delta_t/\lambda, \Delta_t/\lambda])^T
+% \end{equation}
+
+% ,taking values in the subsets of \(\mathbb{R}^{r+1}\). Let \(W\) be the Lyapunov function defined in \ref{eq:W}. 
+% Along non trivial trajectories of \ref{eq:closed_loop_perturbed_scaled}, one gets, for every \(t \geq 0\), that : 
+
+% \begin{equation}
+%     \dot{W} \leq -dW^{2/3} + \partial_{\xi}W \dot{\Delta}_{\lambda}(t) \leq -dW^{2/3} + \Delta_t|\partial_{\xi}W|/\lambda
+% \end{equation}
+
+% According to Remark 1, the homogeneity degree of \(|\partial_{\xi}W|\) is equal to 
+% \(3p_{r+1} - p_{r+1} = 2p_{r+1}\), i.e., the homogeneity degree of \(W^{2/3}\). One deduces from the 
+% previous equation that there exists \(\Delta_* > 0\) such that \(\dot{W} \leq -dW^{2/3}/2\), along 
+% trajectories of System \ref{eq:closed_loop_perturbed_scaled} if \(\Delta_t/\lambda \leq \Delta_*\), i.e., 
+% \(\lambda \geq \lambda_0 = \Delta_t/\Delta_*\). Hence the conclusion.
+
+
+% The contents of Theorem 2 can be derived without relying on HOST controllers but rather on extending the 
+% relative degree of the original system. The latter techniques, however, require a longer chain of integrators. 
+% Notice that the choice of \(\lambda_0\) can be made explicit once \(u_0\) and \(V_1\) are explicitly given. 
+% We do not know how to extend the above result to cases where \(p+(r+1)\kappa>0\). Indeed, for the above 
+% homogeneity argument to work, it is necessary that \(W^{1/(2-\alpha)}\) (with \(\alpha=1/2\)) has the same 
+% degree of homogeneity as \(\partial_{\xi}W\) since \(\dot{\Delta}\) is simply bounded. On the other hand, 
+% \(W^{1/(2-\alpha)}\) has the same degree of homogeneity as \(\partial_{\xi}W \xi\) and thus \(\partial_r V_1\) 
+% must necessarily be of degree zero. This occurs only if \(p+(r+1)\kappa=0\).
+
+% \subsection{Modified Theorem}
+
+Consider the perturbed chain of integrators defined by Equation \ref{eq:perturbed_chain}, where the 
+perturbation \(\Delta\) satisfies assumption \ref{eq:assumption_perturbation_time_forLagrouche}.
+
+Assume there exists a continuous homogeneous feedback law \(u_0\) and a Lyapunov 
+function \(V_1\) satisfying the following assumptions (1) and (2) of Proposition 
+\ref{prop:stabilizing_feedback} with \(p+(r+1)\kappa=0\):
+
+\begin{enumerate}
+    \item The function \( z \mapsto Jr z + u_0(z) e_r \) is homogeneous with respect 
+    to \((\delta_\epsilon)_{\epsilon > 0}\), and there exists a continuous positive definite 
+    function \( V_1: \mathbb{R}^r \to \mathbb{R}_+ \), \( C^1 \) except at the origin, homogeneous 
+    with respect to \((\delta_\epsilon)_{\epsilon > 0}\).
+
+    \item \( z \mapsto \partial_r V_1(z) \) is homogeneous of positive degree with respect 
+    to \((\delta_\epsilon)_{\epsilon > 0}\) and : \begin{equation} z \mapsto \partial_r V_1(z)u_0(z) \end{equation} is negative 
+    over \(\mathbb{R}^r\).
+\end{enumerate}
+
+We have the following theorem:
+
+\begin{theorem}
+    For every positive gains \(k_P \geq 1\) and \(k_I > 0\), there exists \(\lambda_0 > 0\) depending only 
+    on the gains and \(\delta_t\) such that, for \(\lambda \geq \lambda_0\), the dynamic state-feedback 
+    controller \(u_{ST}^{\lambda}(\cdot)\) defined by
+
+    \begin{align}
+        u_{ST}^{\lambda}(t) &= \left(k_P u_0(D_{\lambda} z(t)) + k_I \xi^{\lambda}(t)\right) \label{eq:u_ST_lambda} \\
+        \dot{\xi}^{\lambda}(t) &= -\lambda k_I \partial_r V_1(D_{\lambda} z(t)), \quad \xi^{\lambda}(0) = 0
+    \end{align}
+
+    where \(D_{\lambda} = \text{diag}(\lambda^{r-1}, \ldots, \lambda, 1)\), stabilizes \ref{eq:perturbed_chain} 
+    in finite-time. In particular, \(u_{ST}^{\lambda}(\cdot)\) is continuous.
+\end{theorem}
+
+Fix \(k_P \geq 1\) and \(k_I > 0\). For every \(\lambda > 0\), consider the standard time-coordinate change 
+of variable along trajectories of \ref{eq:perturbed_chain} defined by \(y(t) = D_{\lambda} z(t/\lambda)\). 
+Under the theorem's hypotheses, \ref{eq:perturbed_chain} can be rewritten as:
+
+\begin{equation}
+    \dot{y} = J_r y + (u_{\lambda} + \Delta_{\lambda}) e_r
+\end{equation}
+
+where for \(t \geq 0\), \(u_{\lambda}(t) := u(t/\lambda)\) and \(\Delta_{\lambda}(t) := \Delta(t/\lambda)\) with \(|\dot{\Delta}_{\lambda}| \leq \Delta_t/\lambda\).
+
+The feedback connection between \ref{eq:perturbed_chain} and \ref{eq:u_ST_lambda} can be written as the 
+time-varying system over \(\mathbb{R}^{r+1}\) given by:
+
+\begin{align}
+    \dot{y}(t) &= J_r z(t) + \left(k_P u_0(y(t)) + k_I \xi_{\lambda}(t)\right) e_r \\
+    \dot{\xi}_{\lambda}(t) &= -k_I \partial_r V_1(y(t)) + \dot{\Delta}_{\lambda}, \quad \xi_{\lambda}(0) = \Delta_{\lambda}(0)
+    \label{eq:closed_loop_perturbed_scaled}
+\end{align}
+
+where \(\xi_{\lambda}(t) = \xi^{\lambda}(t/\lambda) + \Delta_{\lambda}(t)\).
+
+Clearly, \ref{eq:closed_loop_perturbed_scaled} corresponds to the differential 
+inclusion \ref{eq:z_dot}-\ref{eq:xi_dot_system} perturbed by the time-varying vector field 
+over \(\mathbb{R}^{r+1}\) given by \((0, \cdots, 0, \dot{\Delta}_{\lambda}(t))^T\) or, equivalently, 
+by the multifunction:
+
+\begin{equation}
+     (0, \cdots, 0, [-\Delta_t/\lambda, \Delta_t/\lambda])^T
+\end{equation}
+
+Let \(W\) be the Lyapunov function defined in \ref{eq:W}. Along non-trivial trajectories 
+of \ref{eq:closed_loop_perturbed_scaled}, one gets, for every \(t \geq 0\), that:
+
+\begin{equation}
+    \dot{W} \leq -dW^{2/3} + \partial_{\xi}W \dot{\Delta}_{\lambda}(t) \leq -dW^{2/3} + \Delta_t|\partial_{\xi}W|/\lambda
+\end{equation}
+
+According to Remark 1 of \cite{Laghrouche2017}, the homogeneity degree of \(|\partial_{\xi}W|\) is equal 
+to \(3p_{r+1} - p_{r+1} = 2p_{r+1}\), i.e., the homogeneity degree of \(W^{2/3}\). One deduces from 
+the previous equation that there exists \(\Delta_* > 0\) such that \(\dot{W} \leq -dW^{2/3}/2\), along 
+trajectories of System \ref{eq:closed_loop_perturbed_scaled} if \(\Delta_t/\lambda \leq \Delta_*\), 
+i.e., \(\lambda \geq \lambda_0 = \Delta_t/\Delta_*\).
+
+The contents of Theorem 2 can be derived without relying on HOST controllers, instead extending the 
+relative degree of the original system. The latter approach, however, requires a longer chain of integrators.
+
+Notice that the choice of \(\lambda_0\) can be made explicit once \(u_0\) and \(V_1\) are explicitly 
+given. We do not know how to extend the above result to cases where \(p+(r+1)\kappa>0\). Indeed, for the 
+above homogeneity argument to work, it is necessary that \(W^{1/(2-\alpha)}\) (with \(\alpha=1/2\)) has the 
+same degree of homogeneity as \(\partial_{\xi}W\) since \(\dot{\Delta}\) is simply bounded. On the other 
+hand, \(W^{1/(2-\alpha)}\) has the same degree of homogeneity as \(\partial_{\xi}W \xi\) and 
+thus \(\partial_r V_1\) must necessarily be of degree zero. This occurs only if \(p+(r+1)\kappa=0\).
+
+One remark we can make on the dilatation function and the necessary homogeneity of certain functions in the
+assumptions is mandatory to get the conditions on A and d in the proof of Theorem 1 to extend the result
+on the unit ball to a global stability with finite time convergence.
+
+We now want to extend this result to the case where the perturbation is time and state dependent like in 
+\ref{eq:assumption_perturbation_sum}. Unfortunately, the time scaling argument does not work in this case
+because the term \(\lambda\) has no effect on the state dependent part of the perturbation derivative as 
+we can see below:
+
+\begin{equation}
+    \dot{\Delta}(t) = \frac{\partial \Delta_t(t)}{\partial t} + \frac{\partial \Delta_t(t)}{\partial z} \dot{z}(t)
+\end{equation}
+
+so we got : 
+
+\begin{equation}
+    \dot{\Delta}_{\lambda}(t) = \frac{1}{\lambda} \frac{\partial \Delta_t(t)}{\partial t} + \frac{\partial \Delta_z(z(t))}{\partial z} \dot{z}
+\end{equation}
+
+It is easy to see that the second term is not affected by \(\lambda\) and thus we cannot use the same argument 
+as before.
+
+Now let's have a look on the work done in \cite{tietze2025dynamic} where the approach is different and deals 
+with algebraic loops but only for a SMC Super Twisting algorithm.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{The Super Twisting case with time and state dependent perturbation}
+
+Now we will present the work done in \cite{tietze2025dynamic} on the Super Twisting algorithm with time and state
+dependent perturbation. The goal is to estabilish a local stability result for the Super Twisting algorithm (STA)
+and use the mathematical tools to try to get the same kind of result for the HOST algorithm.
+
+The constrained sets with Lyapunov functions used in this work is also presented in \cite{khalil2002nonlinear}. 
+Let's consider the following sections.
+
+
+\subsubsection{Stability for Unbounded Perturbations : Sliding Mode case}
+
+To construct an invariant measure for the functional \( V \), let
+\(z = \begin{bmatrix} z_1 & z_2 \end{bmatrix}^T \in \mathbb{R}^n\) and \(\omega \in \mathbb{R}^n_\omega\).
+
+We define the sliding variable:
+
+\begin{align}
+    s(z, \omega) &= Lz_1 + z_2 + H\omega \\
+    \dot{\omega} &= Gz_1 + F\omega
+\end{align}
+
+With \( z_2 = s(z, \omega) - Lz_1 - H\omega \)
+
+The dynamics are described by:
+
+\begin{equation}
+    \begin{cases}
+        \dot{z}_1 = (A - BL)z_1 - BH\omega + Bs(z, \omega) \\
+        \dot{s} = -\rho \text{sgn}(s(z, \omega)) + \Delta(z, t) \\
+        \dot{\omega} = Gz_1 + F\omega
+        \label{eq:closed_loop_dynamicNiclas}
+    \end{cases}
+\end{equation}
+
+We consider the following Lyapunov function:
+
+\begin{equation}
+    V(z_1, \omega) = [z \quad \omega]^T P [z \quad \omega],
+    \label{eq:Lyapunov_V}
+\end{equation}
+
+where \( P = P^T \geq 0 \) and \( A_{cl}^T P + P A_{cl} = -I \).
+We also have:
+\begin{equation}
+    a = 2 \lambda_{\min}(P) \|P B\|_2.
+\end{equation}
+For a given \( c \geq 0 \), we define:
+
+\begin{equation}
+    \Omega_{c, c_\omega} = \left\{ \begin{pmatrix} z \\ \omega \end{pmatrix} \mid \|s(z, \omega)\| \leq c \text{ and } V(z, \omega) \leq c_\omega^2 \right\},
+\end{equation}
+
+where \( c_\omega > a c \).
+
+We consider the following projection of the set \( \Omega_{c, c_\omega} \) on the z subset :
+
+\begin{equation}
+    \Psi_{c, c_\omega} = \left\{ z \mid \exists \omega \in \mathbb{R}^n_{\omega}, \begin{pmatrix} z \\ \omega \end{pmatrix} \in \Omega_{c, c_\omega} \right\}.
+\end{equation}
+
+Now, all the sets and condition are defined, we can state the main assumption and theorem of this section.
+
+\begin{assumption}
+    \label{assumption:H4}
+    For given \( c \geq 0 \) and \( c_\omega \geq a c \), there exists \(\delta > 0\) such that 
+    for all \(t \geq 0 \) and \( z \in \Psi_{c, c_\omega} \), then \( |\Delta(z, t)| \leq \delta \).
+\end{assumption}
+
+
+\begin{theorem}
+    Consider the closed loop \ref{eq:closed_loop_dynamicNiclas} and assumption \ref{assumption:H4} 
+    Given \( z(0) = z_0 \) and \( \omega(0) = \omega_0 \), with \( \rho > \delta \),
+    Then:
+    For all \((x_0, \omega_0) \in \Omega_{c, c_\omega}\), the solution \((z, \omega)\) is bounded and,
+    \begin{equation}
+        \begin{cases}
+            &\forall t \geq 0, (z(t), \omega(t)) \in \Omega_{c, c_\omega} \\
+            &\lim_{t \to \infty} (z(t), \omega(t)) \to 0 \\
+            &s(z, \omega) = 0, \quad \forall t > t_0 = \min \{ t \geq 0 \mid s(z(t), \omega(t)) = 0 \}
+        \end{cases}
+    \end{equation}
+\end{theorem}
+
+This proof is very classical but gives a good framework for what is comming next with the introduction of the 
+algebraic loop in the STA. The new assumption we are going to make only hold locally in the invariant sets 
+and the theorem will be contructed on the same method.
+
+The proof is given in the appendix \ref{app:ProofSMCLocalStabNiclas}.
+
+\subsection{Stability for Unbounded Perturbations : Super Twisting case}
+
+We have to consider the perturbation as the sum like in \ref{eq:assumption_perturbation_sum} 
+: \( \Delta(z, t) = \Delta_z(z) + \Delta_t(t) \)
+
+\textbf{Control Design} 
+
+We use the classical STA with a gain scaling \(\mu > 0\) to compensate the perturbation:
+\begin{equation}
+    \begin{cases}
+        u = u_0 - \mu^{-1} \alpha_1 |s(z, \omega)|^{1/2} \text{sgn}(s(z, \omega)) + v \\
+        \dot{v} = -\frac{1}{2} \mu^{-2} \alpha_2 \text{sgn}(s(z, \omega)), \quad v(0) = v_0
+    \end{cases}
+\end{equation}
+
+With the gains \( \alpha_1, \alpha_2 > 0 \), and the gain scale: \( \mu > 0 \).
+
+This leads to the new closed loop dynamics:
+\begin{equation}
+    \begin{cases}
+        \dot{z} = (A - BL)z_1 - BH\omega + B s(z, \omega) \\
+        \dot{s} = -\mu^{-1} \alpha_1 |s(z, \omega)|^{1/2} \text{sgn}(s(z, \omega)) + v + \Delta(z, t) \\
+        \dot{v} = -\frac{1}{2} \mu^{-2} \alpha_2 \text{sgn}(s(z, \omega)) \\
+        \dot{\omega} = Gz_1 + F\omega
+    \end{cases}
+    \label{eq:closed_loop_dynamicNiclasSTA}
+\end{equation}
+
+\textbf{Stability of the Closed Loop} 
+
+We have to create a new invariant set \(\Lambda_{c, c_\omega, \mu}\) for the extended state :
+\((z, \omega, v) \in \mathbb{R}^{n + n_\omega + 1}\).
+
+Given \( \alpha_1, \alpha_2 > 0 \), we note:
+
+\begin{equation}
+    A_s = \frac{1}{2} \begin{bmatrix} -\alpha_1 & 1 \\ -\alpha_2 & 0 \end{bmatrix}, \quad B_s = \begin{bmatrix} 0 \\ 1 \end{bmatrix}, \quad P_s = \begin{pmatrix} p_{11} & p_{12} \\ p_{12} & p_{22} \end{pmatrix}
+\end{equation}
+
+The solution of \( A_s^T P_s + P_s A_s = -I \) with \( p_{12} = -1 \).
+Consider the following objective function:
+
+\begin{equation}
+V_\mu(s, v) = p_{11} |s| + 2 p_{12} \mu v |s|^{1/2} \text{sgn}(s) + p_{22} \mu^2 v^2
+\end{equation}
+
+We introduce also the compact set:
+
+\begin{equation}
+\Gamma_{c, \mu} = \left\{ \begin{pmatrix} s \\ v \end{pmatrix} \mid V_\mu(s, v) \leq k(c) \right\}
+\end{equation}
+
+where
+
+\begin{equation}
+k(c) = \frac{p_{11} p_{22} - p_{12}^2}{p_{22}} c
+\end{equation}
+
+We can show:
+For \(\begin{pmatrix} s \\ v \end{pmatrix} \in \Gamma_{c, \mu}\), \(|s| \leq c\) and 
+\(|v| \leq \frac{1}{\mu} \sqrt{\frac{p_{11}}{p_{22}}c}\).
+Note: The upper bound of \(|v|\) increases when the value of \(\mu\) decreases and vice versa.
+Therefore, for \(\forall \epsilon \in \mathbb{R}\):
+
+\begin{equation}
+    \exists v \in \mathbb{R}, \left( \begin{pmatrix} s \\ v \end{pmatrix} \in \Gamma_{c, \mu} \right) \iff |s| \leq c
+\end{equation}
+
+We consider the following Lyapunov function candidates \(V_\mu\) and \(V(z_1, \omega)\) \ref{eq:Lyapunov_V} 
+and the scalar:
+\begin{equation}
+    a = 2 \lambda_{\max}^{1/2}(P) \|PB\|_2
+\end{equation}
+
+We define the following set:
+\begin{equation}
+    \Lambda{c, c_\omega, \mu} = \left\{ \begin{pmatrix} z \\ \omega \\ v \end{pmatrix} \mid V_\mu(s(z, \omega), v) \leq k(c) \cap V(z, \omega) \leq c_\omega^2 \right\}
+\end{equation}
+
+And their projections in the subspaces $z-\omega$ and $z$:
+
+\begin{equation}
+    \Phi_{c, c_\omega} = \left\{ \begin{pmatrix} z \\ \omega \end{pmatrix} \mid \exists v \in \mathbb{R}, \begin{pmatrix} z \\ \omega \\ v \end{pmatrix} \in \Lambda_{c, c_\omega, \rho} \right\}
+\end{equation}
+\begin{equation}
+    \Psi_{c, c_\omega} = \left\{ z \mid \exists (\omega, v) \in \mathbb{R}^{m_\omega + 1}, \begin{pmatrix} z \\ \omega \\ v \end{pmatrix} \in \Lambda_{c, c_\omega, \rho} \right\}
+\end{equation}
+
+\begin{lemma}
+The projections \(\Phi_{c, c_\omega}\) and \(\Psi_{c, c_\omega}\) don't depend on \(\mu > 0\) and 
+\(\Phi_{c, c_\omega} = \Omega_{c, c_\omega}\) and
+\(\Psi_{c, c_\omega} = \Psi_{c, c_\omega} \quad \forall c > 0 \text{ or } c_\omega > a c\).
+\end{lemma}
+
+Given a variable of comparison \(u_c\), \(\exists u_{\max} > 0\) independent of \(\mu\) such that:
+\begin{equation}
+    \|Az_1 + Bz_2\|_2 + |u_0| \leq u_{\max} \quad \forall \begin{pmatrix} z \\ \omega \end{pmatrix} \in \Phi_{c, c_\omega}
+\end{equation}
+
+\begin{assumption}
+    For all \(c \geq 0\) and \(c_\omega \geq a c\), there exist \(\delta, \delta_t, \delta_z > 0\) such that 
+    for all \(t \geq 0\) and all \(z \in \Phi_{c, c_\omega}\), we have:
+    \begin{equation}
+        |\Delta(z, t)| \leq \delta,
+    \end{equation}
+    \begin{equation}
+        \left| \frac{d\Delta_t(t)}{dt} \right| \leq \delta_t,
+    \end{equation}
+    \begin{equation}
+        \left| \frac{\partial \Delta_z(z)}{\partial z} \right| \leq \delta_{z} 
+    \end{equation}
+\end{assumption}
+
+These lemma and assumption give the key to have conditions on the gain \(\mu\) to ensure the stability 
+in case of unbounded perturbation. We can proove the next theorem by the same method as before with the 
+invariant sets and the Lyapunov functions we created in this section. The proof can be found in \cite{tietze2025dynamic}.
+
+
+\begin{theorem}
+    Consider the Closed Loop of \ref{eq:closed_loop_dynamicNiclasSTA} and the Initial Conditions:
+
+    \begin{equation} 
+        z(0) = z_0, \quad \omega(0) = \omega_0, \quad v(0) = v_0 
+    \end{equation}
+
+    Let
+
+    \begin{equation}
+        \mu_0 = (\delta \|P_0 B_0\|_2)^{-1} \left( \frac{k(c)}{\lambda_{\min}(P_s)} \right)^{1/2},
+    \end{equation}
+
+    \begin{equation}
+        \mu_1 = (2\gamma \|P_s B_s\|_2)^{-1}.
+    \end{equation}
+
+    For \(\gamma = \mu_0 (\delta_t + \delta_z U_{\max} + \delta_z \delta) + \delta_z (\alpha_1 + \sqrt{\frac{p_{11}}{p_{22}}})\sqrt{c}\),
+    
+    For all \(\mu < \min(\mu_0, \mu_1)\), and \(\begin{pmatrix} z_0 \\ \omega_0 \\ v_0 \end{pmatrix} \in \Lambda_{c, c_\omega, \rho}\), 
+    the solution \((z, \omega, v)\) is bounded such that :
+
+    \begin{equation}
+        \forall t \geq 0, (z(t), \omega(t), v(t)) \in \Delta_{c, c_\omega, \rho},
+    \end{equation}
+
+    where \(\lim_{t \to \infty} (z(t), \omega(t)) = 0\), and \(\forall t \geq t_0 > 0\):
+    
+    \begin{equation}
+        s(z(t), \omega(t)) = 0,
+    \end{equation}
+    
+    \begin{equation}
+        v(t) = -\Delta(z(t), t).
+    \end{equation}
+\end{theorem}
+
+
+The use of the scaling gain \(\mu\) gives the possibility to compensate the perturbation and ensure the 
+stability of the closed loop system with explicite conditions. The question is, can we use the same method 
+to estabilish an invariant set on the HOST algorithm with the Lyapunov function given in \cite{Laghrouche2017} ?
+Is it sufficient to also just add the scaling gain \(\mu\) in the HOST algorithm to ensure the stability in 
+case of algebraic loop ?
+
+
+
+%=========================================================================================================%
+%                                                                                                         %
+%                                      NEW SECTION                                                       %
+%                                                                                                         %
+%=========================================================================================================%
+\newpage
+\section{Algebraic Loops in High Order Super Twisting}
+
+As we saw in the previous section, the Super Twisting algorithm case can be used in case of time and state dependent
+perturbation with the introduction of an algebraic loop can be extend to the HOST algorithm. The work is divided
+in two steps because of the complexity in the reunion of the two theorems using different tools and methods.
+
+First, we will try to get a first result on a evident case with an easy to handle class of perturbation to 
+get the theory right. Then we will try to extend the result to a more general class of perturbation
+
+\subsection{First step : taking an easy class of perturbation to handle}
+
+We consider the system of dimension \(r \in \mathbb{N}\) with the following dynamics:
+
+\begin{equation}
+    \dot{z} = J_r z + (u + \Delta(z, t)) e_r
+\end{equation}
+
+where \(z \in \mathbb{R}^r\), \(J_r\) is the \(r\)-order Jordan block, \(e_r = [0, \ldots, 0, 1]^T \in \mathbb{R}^r\),
+\(u \in \mathbb{R}\) is the control input and \(\Delta(z, t)\) is a perturbation depending on the state and time.
+
+The perturbation satisfies the following assumption:
+
+\begin{assumption}
+    \label{assumption:perturbation_easy_case}
+    There exists \(\delta, \delta_z, \delta_t > 0 \) such that for all \( t \geq 0 \) and \( z \in \mathbb{R}^r \):
+    \begin{equation}
+        \Delta(z, t) = \Delta_z(z) + \Delta_t(t)
+    \end{equation}
+    and,
+    \begin{equation}
+        \forall z, t \in \mathbb{R}^r \times \mathbb{R}_+, \\
+        \begin{cases}
+            |\Delta(z, t)| \leq \delta, \\
+            \left| \frac{d\Delta_t(t)}{dt} \right| \leq \delta_t, \\
+            \forall i \in \{1, \ldots, r\}, \left| \frac{\partial \Delta_z(z)}{\partial z_i} \right| \leq \delta_{z}
+        \end{cases}
+    \end{equation}
+\end{assumption}
+
+We assume that there exists the same stabilizing feedback law \(u_0\) and Lyapunov function \(V_1\) as in
+Proposition \ref{prop:stabilizing_feedback} with \(p + (r+1)\kappa = 0\) and \(\alpha = 1 + \frac{\kappa}{2p_{r+1}} =1/2\).
+
+
+The next assumption is the one that differentiate this section from the next one on the class of the perturbation.
+
+\begin{assumption}
+    \label{assumption:H4_extended}
+    For all \(z \in \mathbb{R}^r\), we have : \(\frac{\partial \Delta_z(z)}{\partial z_r} = 0\)
+\end{assumption}
+
+This assumption is very strong and may be out of context because it is clear that it kills the algebraic loop :
+
+\begin{equation}
+    \dot{\Delta}(z, t) = \frac{d\Delta_t(t)}{dt} + \sum_{i=1}^{r} \frac{\partial \Delta_z(z)}{\partial z_i} \dot{z}_i = \frac{d\Delta_t(t)}{dt} + \sum_{i=1}^{r-1} \frac{\partial \Delta_z(z)}{\partial z_i} z_{i+1}
+\end{equation}
+
+Which doesn't contains the control input dynamics. We can state the following inequality independent 
+of the control input:
+
+\begin{equation}
+    |\dot{\Delta}(z, t)| \leq \delta_t + \sum_{i=1}^{r-1} \delta_{z_i} |z_{i+1}| \leq \delta_t + \delta_z \|z\|_1
+\end{equation}
+
+And by placing us on the unit sphere and using the same notation as in the proof of 
+Theorem in appendix~\ref{app:proof_theorem1} :
+
+\begin{equation}
+    |\dot{\Delta}(z, t)| \leq \delta_t + \sum_{i=1}^{r-1} \delta_{z_i} Z_{M_{i+1}} \leq \bar{\delta}
+\end{equation}
+
+with : \(Z_{M_i} = \max_{z \in R_p} |z_{i}|\)
+
+But this case has an interest because even though \(\bar{\delta}\) doesn't depend on time and state,
+the time scaling solution is no use here because of the state dependent part of the perturbation.
+
+We consider the following HOST controller with a scaling gain \(\mu > 0\):
+\begin{align}
+    u_{ST}^{\mu}(t) &= \left(k_P u_0(z(t)) + k_I \xi^{\mu}_{\Delta}(t)\right) \\
+    \dot{\xi}^{\mu}_{\Delta}(t) &= -\mu k_I \partial_r V_1(z(t)), \quad \xi^{\mu}_{\Delta}(0) = 0
+\end{align}
+
+Which leads to the closed loop dynamics:
+\begin{equation}
+    \begin{cases}
+        \dot{z} &= J_r z + \left(k_P u_0(z) + k_I \xi^{\mu}_{\Delta}  \right) e_r \\
+        \dot{\xi}^{\mu}_{\Delta} &= -\mu k_I \partial_r V_1(z(t)) + \dot{\Delta}(z, t), \quad \xi^{\mu}_{\Delta}(0) = \dot{\Delta}(0)
+        \label{eq:closed_loop_dynamicNiclasHOST}
+    \end{cases}
+\end{equation}
+
+The goal is to establish an invariant set constraining the system trajectories using the Lyapunov function 
+\(W\) defined in \ref{eq:W}.
+
+Let's consider the Lyapunov function \(W\) defined in \ref{eq:W} and the following set:
+\begin{equation}
+    \Lambda_{b, \mu} = \left\{ \begin{pmatrix} z \\ \xi \end{pmatrix} \mid W(z, \xi) \leq b \right\}
+\end{equation}
+
+We also cannot use the same approach as in \cite{Laghrouche2017} with the direct perturbed vector field.
+The addition of the gain \(\mu\) has to be followed along the calculation to find a condition on it
+that ensures the stability of the closed loop system.
+
+The addition of the gain \(\mu\) in the HOST controller doesn't change the homogeneity of the closed loop system, so
+we can stay on the unit sphere and compensate the perturbation with \(\mu\) like in the STA case by assuming this :
+
+\begin{equation}
+    \mu \leq 1 + \frac{\xi_{\max} \bar{\delta}}{(k_p - 1) V_{Umax}}
+\end{equation}
+
+where \(V_{Umax} = - \max_{z \in R_p} |\partial_r V_1(z) u_0(z)|\) and \(\xi_{\max} = \max_{\xi \in R_\xi} |\xi|\).
+
+This assumption seems not very logical because it gives an upper bound on \(\mu\) but, we have to keep in mind
+that \(\mu > 0\) to ensure the stability which creates a constraint on \(k_p\) that has to be sufficiently large to
+ensure the existence of \(\mu\) and thus the stability of the closed loop system.
+
+This assumption assures that the function \(W\) is a Lyapunov function for the closed loop system 
+\ref{eq:closed_loop_dynamicNiclasHOST} and ensure that we can pursue the proof with the same method as in the 
+last section with the STA using the invariant set \(\Lambda_{b, \mu}\) to establish the following theorem:
+
+\begin{theorem}
+    Consider the perturbed chain of integrators defined by the dynamics:
+    \begin{equation}
+    \dot{z} = J_r z + (u + \Delta(z, t)) e_r
+    \end{equation}
+    where the perturbation \(\Delta(z, t)\) satisfies Assumptions \ref{assumption:perturbation_easy_case} and \ref{assumption:H4_extended}. Assume there exists a continuous homogeneous feedback law \(u_0\) and a Lyapunov function \(V_1\) satisfying Proposition \ref{prop:stabilizing_feedback} with \(p + (r+1)\kappa = 0\) and \(\alpha = 1/2\).
+
+    For every positive gains \(k_P \geq 1\) (that ensures the positiveness of \(\mu\)) 
+    and \(k_I > 0\), and for a scaling gain \(\mu\) satisfying:
+
+    \begin{equation}
+        \mu \leq 1 + \frac{\xi_{\max} \bar{\delta}}{(k_p - 1) V_{Umax}}
+    \end{equation}
+
+    where \(V_{Umax} = - \max_{z \in R_p} |\partial_r V_1(z) u_0(z)|\) and \(\xi_{\max} = \max_{\xi \in R_\xi} |\xi|\), the dynamic state-feedback controller \(u_{ST}^{\mu}(\cdot)\) defined by:
+    \begin{align}
+        u_{ST}^{\mu}(t) &= \left(k_P u_0(z(t)) + k_I \xi^{\mu}_{\Delta}(t)\right) \\
+        \dot{\xi}^{\mu}_{\Delta}(t) &= -\mu k_I \partial_r V_1(z(t)), \quad \xi^{\mu}_{\Delta}(0) = 0
+    \end{align}
+    ensures that the closed-loop system is finite-time stable with respect to the origin. 
+
+\end{theorem}
+
+
+\subsection{Second step : extending the result to a more general class of perturbation, main ideas}
+
+I have not yet a complete result for this section but I will try to give the main ideas of the approach.
+
+The main idea would be to consider the same system and controller as in the previous section but without
+we can see quickly by following the same proof steps that the gain scaling \(\mu\) only in the integral part
+of the HOST controller is not sufficient to compensate the perturbation derivative. A way should be to consider 
+the new controller:
+
+\begin{align}
+    u_{ST}^{\mu}(t) &= \left(k_P u_0(z(t)) + \mu k_I \xi^{\mu}_{\Delta}(t)\right) \\
+    \dot{\xi}^{\mu}_{\Delta}(t) &= -\mu k_I \partial_r V_1(z(t)), \quad \xi^{\mu}_{\Delta}(0) = 0
+\end{align}
+
+and try to mitigate the effects of the perturbation derivative with the gain \(\mu\) to keep the proprieties
+of the Lyapunov function \(W\) defined in \ref{eq:W}. It would lead to the same conclusion.
+
+
+Here the constion on the perturbation is different because we have to introduce the algebraic loop in its derivative:
+
+\begin{align}
+    \dot{\Delta}(z, t) &= \frac{d\Delta_t(t)}{dt} + \sum_{i=1}^{r} \frac{\partial \Delta_z(z)}{\partial z_i} \dot{z}_i \\
+    &= \frac{d\Delta_t(t)}{dt} + \sum_{i=1}^{r-1} \frac{\partial \Delta_z(z)}{\partial z_i} z_{i+1} + \frac{\partial \Delta_z(z)}{\partial z_r} (k_P u_0(z) + \mu k_I \xi^{\mu}_{\Delta})
+\end{align}
+
+Here, we cannot find a bound \(\bar{\delta}\) independent of the state which complexifies a lot 
+the calculations and the conditions on gain scaling \(\mu\) to ensure the stability of the closed loop system.
+
+%=========================================================================================================%
+%                                                                                                         %
+%                                      NEW SECTION                                                       %
+%                                                                                                         %
+%=========================================================================================================%
+\newpage
+\section{Conclusion and future work}
+
+Unfortunately, I didn't get enough time to finish the work on the HOST algorithm with algebraic loops
+but I think the approach is correct and the first step is a good start to get the theory right. The next step
+is to try to find gain scaling that fit the calculations to keep the Lyapunov function \(W\) as a Lyapunov 
+function for the closed loop system. It is the easiest way to ensure the stability of the closed loop system that 
+has the asset to stay close to the theory of \cite{tietze2025dynamic} with the ability to use the homogeneity
+of the system to establish local invariant sets and extend the result to a global stability with finite time 
+convergence.
+
+
+The difficulty is to handle the unknown terms of the HOST controller that aren't very classical and 
+create a condition on \( \mu \) that ensures the stability of the closed loop system while being 
+possible because as we could have seen, the condition we can set on \( \mu \) in the first step have 
+indirect repercussions on the choice of \( k_P \) and \( k_I \) that have to be sufficiently large to 
+ensure the existence of \( \mu \) which increases the complexity of the tuning of the controller and the
+work of the control input.
+
+One last thing that I found very surprising is the lack of articles on the HOST algorithm especially on its
+stability. The state of the art gives articles on its implementnation but few papers gives actual stability
+proofs. The article \cite{Laghrouche2017} is the only one I found that gives a complete proof of the stability
+of the HOST algorithm with a Lyapunov function that I could use and found very interesting to consider with
+the work of \cite{tietze2025dynamic}.

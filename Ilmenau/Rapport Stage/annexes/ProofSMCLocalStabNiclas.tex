@@ -1,0 +1,89 @@
+
+\chapter{Proof of SMC Local Stability (from \cite{tietze2025dynamic})}
+\label{app:ProofSMCLocalStabNiclas}
+
+
+\textbf{Preliminaries:}
+\begin{equation}
+(z_0, \omega_0) \in \Omega_{c, c_\omega} \implies \left\{ |s(z_0, \omega_0)| \leq c \text{ and } V(z_1(0), \omega_0) \leq c_\omega^2 \right\}
+\end{equation}
+
+\textbf{i)} Let's show that \((z, \omega) \in \Omega_{c, c_\omega}\)
+By contradiction, we assume:
+\begin{equation}
+\exists T > 0, \quad (z(T), \omega(T)) \notin \Omega_{c, c_\omega}
+\end{equation}
+
+\textbf{By case distinction:}
+\begin{itemize}
+    \item \textbf{Case a):} Suppose \( \frac{d}{dt} |s(z(T), \omega(T))| > 0 \).
+    \item \textbf{Case b):} Or \( V(z(T), \omega(T)) > c \) or \( V(z(t), \omega(t)) = c_\omega^2 \).
+\end{itemize}
+
+
+\textbf{a)} For all \( z(t) \in \Psi_{c, c_\omega} \) and \( t \leq T \), we have
+ \( |\Delta(x, t)| \leq \delta \). For the gain \( \rho > \delta \), we have 
+ \( \rho > |\Delta(z(t), t)| \) or the derivative of \( V_0(s) = \frac{1}{2} s^2 \) is:
+
+\begin{equation}
+\dot{V}_0 = - \rho |s| + \Delta(z(t), t) \leq -(\rho - \delta)|s| < 0
+\end{equation}
+
+Hence the derivative of \( |s(z, \omega)| \) is not positive for \( t = T \).
+
+
+\textbf{b)} Note that: \( c_\omega >\geq a c \) and by construction: \( |s(z(T), \omega(T))| \leq c \)
+\begin{equation}
+V(z(T), \omega(T)) = c_\omega^2
+\end{equation}
+This implies \( V(z(T), \omega(T)) \geq (a c)^2 \geq a^2 |s(z(T), \omega(T))|^2 \)
+In addition, we obtain:
+\begin{equation}
+\dot{V} = -z_1^T z_1 + 2 z_1 P B_{cl} s(z, \omega)
+\end{equation}
+\begin{equation}
+\leq -(\|z_1\|_2 - 2 \| P B_{cl}\|_2 |s(z, \omega)|) \|z_1\|_2
+\end{equation}
+Thus,
+\begin{equation}
+\|z_1\|_2 \leq 2 \| P B_{cl}\|_2 |s(z, \omega)| = \lambda_{\max}^{-1/2}(P) a |s(z, \omega)|
+\end{equation}
+\begin{equation}
+\Rightarrow \dot{V} \leq 0
+\end{equation}
+where \( a = 2 \lambda_{\min}(P) \| P B_{cl}\|_2 \).
+Since \( V \) is quadratic such that \( \frac{V(z_1, \omega)}{\lambda_{\max}(P)} \leq \|z_1\|_2^2\)
+This implies:
+\begin{equation}
+V(z_1, \omega) > (a |s(z_1, \omega)|)^2 \implies \|z_1\|_2 \geq a \lambda_{\max}^{-1/2}(P) |s(z_1, \omega)| \implies \dot{V} \leq 0
+\end{equation}
+
+
+Both a) and b) are absurd,
+
+Then \( \forall t \geq 0, (z(t), \omega(t)) \in \Omega_{c, c_\omega} \)
+
+\textbf{ii)} Suppose that \( \forall t \geq 0, (z(t), \omega(t)) \in \Omega_{c, c_\omega} \)
+Then \( |\Delta(x, t)| \leq \delta \), so we have:
+\begin{equation}
+\dot{V}_0 \leq -(\rho - \delta) |s| < 0
+\end{equation}
+And thus the solution of the closed-loop \( s(z, \omega) \) converges to 0 in finite time \( t_0 - 0 \):
+\begin{equation}
+\forall t \geq t_0 = \min \{ t \geq 0 \mid s(z(t), \omega(t)) = 0 \}, \quad s(z(t), \omega(t)) = 0
+\end{equation}
+Finally, \( s \) and \( V(z_1, \omega) \) have good boundedness properties of \( (z_1, \omega) \).
+Since \( z_2 = s - Lx - H\omega \),
+\( z_2 \) is bounded.
+When we reach the sliding mode, for \( t \geq t_0 \), \( s(z(t), \omega(t)) = 0 \) and thus \( \dot{V} \) asymptotically tends to:
+\begin{equation}
+\dot{z}_1 = A_{cl} z_1 + B s 
+\end{equation}
+With the convergence of \( s \) and \( z_1 \), we have \( z \) also converging asymptotically to 0.
+Thus,
+\begin{equation}
+z \text{ converges asymptotically to } 0
+\end{equation}
+
+% Your proof content starts here
+

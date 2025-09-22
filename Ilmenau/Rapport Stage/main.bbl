@@ -1,0 +1,99 @@
+\begin{thebibliography}{10}
+
+\bibitem{Baldi2011}
+Simone Baldi, Petros Ioannou, and Edoardo Mosca.
+\newblock Multiple model adaptive mixing control: The discrete-time case.
+\newblock {\em IEEE Transactions on Automatic Control}, 56(12):2960--2965,
+  December 2011.
+
+\bibitem{Barabanov2005}
+Nikita Barabanov, Romeo Ortega, and Alessandro Astolfi.
+\newblock Is normalization necessary for stable model reference adaptive
+  control?
+\newblock {\em IEEE Transactions on Automatic Control}, 50(9):1385--1389,
+  September 2005.
+
+\bibitem{Harmouche2012}
+Mohamed Harmouche, Salah Laghrouche, and Yacine Chitour.
+\newblock Robust and adaptive higher order sliding mode controllers.
+\newblock {\em Preprint}, 2012.
+\newblock Available: http://hal.archives-ouvertes.fr/hal-00703669.
+
+\bibitem{Hong2005}
+Yiguang Hong, Jiankui Wang, and Zairong Xi.
+\newblock Stabilization of uncertain chained form systems within finite
+  settling time.
+\newblock {\em IEEE Transactions on Automatic Control}, 50(9):1379--1384,
+  September 2005.
+
+\bibitem{kamal2014higher}
+Shyam Kamal, Asif Chalanga, J.A. Moreno, L.~Fridman, and B.~Bandyopadhyay.
+\newblock Higher order super-twisting algorithm.
+\newblock {\em IEEE Transactions on Automatic Control}, 2014.
+\newblock Preprint.
+
+\bibitem{khalil2002nonlinear}
+Hassan~K. Khalil.
+\newblock {\em Nonlinear Systems}.
+\newblock Prentice Hall, Upper Saddle River, NJ, 3 edition, 2002.
+\newblock Includes bibliographical references and index.
+
+\bibitem{Knierim2010Crane}
+Karl~Lukas Knierim, Kai Krieger, and Oliver Sawodny.
+\newblock Flatness based control of a 3-dof overhead crane with velocity
+  controlled drives.
+\newblock In {\em Proceedings of the 5th IFAC Symposium on Mechatronic
+  Systems}, pages 363--368, Cambridge, MA, USA, 2010. IFAC.
+
+\bibitem{Laghrouche2017}
+Salah Laghrouche, Mohamed Harmouche, and Yacine Chitour.
+\newblock Higher order super-twisting for perturbed chains of integrators.
+\newblock {\em IEEE Transactions on Automatic Control}, 62(10):5315--5322,
+  October 2017.
+
+\bibitem{Moreno2012}
+Jaime~A. Moreno and Marisol Osorio.
+\newblock Strict lyapunov functions for the super-twisting algorithm.
+\newblock {\em IEEE Transactions on Automatic Control}, 57(3):768--773, March
+  2012.
+
+\bibitem{Noack2020}
+Matti Noack and Johann Reger.
+\newblock Exakte eingangs/ausgangs-linearisierung für mehrgrößensysteme.
+\newblock {\em Versuchsanleitung - Praktikum NLR 2}, January 2020.
+\newblock Verantwortlicher Hochschullehrer: Prof. Dr.-Ing. Johann Reger.
+
+\bibitem{Tietze2023CruiseControl}
+Niclas Tietze, Kai Wulff, and Johann Reger.
+\newblock High-gain model-following control for cruise control: Efficient
+  implementation and robustness.
+\newblock {\em CDC Proceedings or Preprint (specific venue not identified)},
+  2023.
+\newblock Preprint. Technical University of Ilmenau. Contact:
+  kai.wulff@tu-ilmenau.de.
+
+\bibitem{tietze2024localStabilisation}
+Niclas Tietze, Kai Wulff, and Johann Reger.
+\newblock Local stabilisation of nonlinear systems with time- and
+  state-dependent perturbations using sliding-mode model-following control.
+\newblock {\em IEEE Conference on Decision and Control}, 2024.
+
+\bibitem{tietze2024local}
+Niclas Tietze, Kai Wulff, and Johann Reger.
+\newblock Local stabilization of systems with time- and state-dependent
+  perturbations using super-twisting integral sliding-mode control.
+\newblock {\em European Control Conference}, pages 3285--3291, 2024.
+
+\bibitem{tietze2025dynamic}
+Niclas Tietze, Kai Wulff, and Johann Reger.
+\newblock Local stability analysis for sliding mode control with unbounded
+  perturbations - dynamic sliding mode design revisited.
+\newblock {\em Preprint}, 2025.
+
+\bibitem{Willkomm2023MFC}
+Julian Willkomm.
+\newblock {\em Model-Following Control for a Class of Nonlinear Systems}.
+\newblock Dissertation, Technische Universität Ilmenau, Ilmenau, Germany,
+  March 2023.
+
+\end{thebibliography}

@@ -1,0 +1,52 @@
+\chapter{User notice to launch the MFC on the Real Plant of the Crane System}
+\label{app:Dspace_implementation}
+\section*{Initialization}
+Here is a quick launch guide for the MFC control of the crane system.
+\begin{enumerate}
+    \item Open \textit{DSPACE ControlDesk 4.2.1}.
+    
+    \item Open the project and experiment located in the root directory:\\
+    \textit{C:\textbackslash Users\textbackslash portalkran\textbackslash Documents\textbackslash MATLAB\textbackslash Crane User},\\
+    and select \textit{Experiment\_001} of \textit{Project\_001}.
+    
+    \item Turn the real system ON (switch "Plant On") and wait for the \textbf{Ready to operate} indicator to light up in green. Then press \textbf{Servos On}.
+    
+    \item In ControlDesk, set the \textbf{StartNStop} value to 1 and press \textbf{Enable On} on the real system panel. The crane should then start moving to a corner at constant speed.
+    
+    \item Wait until the \textbf{initPhase} indicator reaches 1. Then, \textbf{controlAllowed} should also reach 1. This means that the system and controls are ready to operate.
+    
+    \item To start the MFC control, set \textbf{startCtrl} to 1. The crane will stabilize at the position : \((x_{pS},\ y_{pS},\ z_{pS})\)
+\end{enumerate}
+\section*{Dynamic Trajectories}
+To start dynamic trajectory following, choose one by setting the value of \textit{enFF} to an integer between 1 and 4. The meaning of each value is:
+\begin{itemize}
+    \item \textbf{0}: No trajectory — the mass is stabilized at a fixed setpoint position.
+    
+    \item \textbf{1}: \textbf{1D sinusoidal motion along the \textit{x}-axis} — the mass oscillates smoothly back and forth along the horizontal axis (x-direction) following a cosine wave, while the y- and z-positions remain constant.
+    \item \textbf{2}: \textbf{2D circular trajectory in the \textit{xy}-plane} — the mass follows a circular path centered near the setpoint in the horizontal plane (x-y). The vertical position remains fixed.
+    \item \textbf{3}: \textbf{2D lemniscate (figure-eight) trajectory in the \textit{xy}-plane} — the mass follows a horizontally oriented lemniscate path (\(\infty\)-shaped) with smooth motion, centered around the setpoint. The vertical position remains fixed.
+    \item \textbf{4}: \textbf{3D lemniscate trajectory with vertical oscillations} — the mass follows the same horizontal lemniscate (\(\infty\) shape) as in mode 3, but the z-axis position now varies sinusoidally. This creates a spatial 3D trajectory resembling a twisted ribbon or waving figure-eight path.
+\end{itemize}
+\section*{Last project with differentiator}
+The last project made is from the file Matis Crane, which uses the MFC controller and the differentiator made by Niclas Tietze to estimate the states.
+The Simulink model used to generate the code is in the file \textit{crane\_MFC\_Niclas\_DIFF.mdl}. To compile it, use the script \textit{build\_MFC\_crane\_Niclas.m}.
+On DSPACE, open the project \textit{Project\_niclasDIFF} then experiment \textit{Experiment\_001}.
+The parameters and board settings are quite similar to the previous version, except that we now use only one trajectory available in the block \textit{Niclas\_MFC/Desired Trajectory}.
+One can set the first setpoint position of the trajectory by changing the values of the reference
+\begin{itemize}
+    \item \(x\_s = 0.2\)
+    \item \(y\_s = 0.2\)
+    \item \(l\_s = 0.4\)
+\end{itemize}
+{\sloppy In the block \textit{crane\_MFC\_Niclas\_DIFF/Portal Crane System/Crtl Selector/LQR/control algorithm}}
+
+{\sloppy The control gains and parameters can be adjusted in the compiling script: \\
+\textit{build\_MFC\_crane\_Niclas.m}.}
+
+Finally, the control on DSPACE works basically the same as before:
+\begin{itemize}
+    \item Initialize the system by setting on one the control init button.
+    \item The crane should go by itself in the left upper corner, if the Z-axis doesn't go up, look on the direct control app of the computer to put the signal type of the Z-axis to 0.
+    \item Wait until the init phase is done and the control allowed is on, after that the LQR control block should stabilize the crane at the set point position (the block is available in: \textit{crane\_MFC\_Niclas\_DIFF/Portal Crane System/Crtl Selector/LQR}).
+    \item Set the start control button to 1 to start the MFC controller, it should follow a 8 shape trajectory. Be careful of the initial condition of the model available in the building script and make sure they are not too far from the real initial condition of the system aka the set point position of the LQR control block.
+\end{itemize}
